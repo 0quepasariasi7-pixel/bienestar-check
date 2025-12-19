@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Chequeo de Bienestar Digital</title>
+    <style>
+        :root {
+            --primary: #6366F1; 
+            --primary-dark: #4338CA;
+            --accent: #06B6D4;  
+            --bg-gradient: linear-gradient(135deg, #F5F7FF 0%, #FFFFFF 100%);
+            --text-dark: #111827;
+            --text-gray: #4B5563;
+            --white: #ffffff;
+            --shadow-soft: 0 10px 25px -5px rgba(0, 0, 0, 0.05);
+            --shadow-strong: 0 20px 25px -5px rgba(99, 102, 241, 0.2);
+            --radius: 24px;
+        }
+
+        * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+
+        body {
+            font-family: -apple-system, system-ui, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            background: var(--bg-gradient);
+            margin: 0;
+            height: 100dvh;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            color: var(--text-dark);
+        }
+
+        .progress-container {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            height: 8px;
+            background: #E5E7EB;
+            z-index: 10;
+        }
+
+        .progress-bar {
+            height: 100%;
+            background: linear-gradient(90deg, var(--primary), var(--accent));
+            width: 0%;
+            transition: width 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .app-container {
+            flex: 1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 16px;
+            max-width: 450px;
+            margin: 0 auto;
+            width: 100%;
+        }
+
+        .card {
+            background: var(--white);
+            padding: 36px 28px;
+            border-radius: var(--radius);
+            box-shadow: var(--shadow-soft);
+            width: 100%;
+            min-height: 520px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            animation: slideUp 0.4s ease-out;
+            border: 1px solid rgba(255, 255, 255, 0.5);
+        }
+
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .question-text {
+            font-size: 1.55rem;
+            font-weight: 800;
+            color: var(--text-dark);
+            line-height: 1.25;
+            margin-bottom: 10px;
+            letter-spacing: -0.02em;
+        }
+
+        .subtitle {
+            font-size: 1.05rem;
+            color: var(--text-gray);
+            margin-bottom: 28px;
+            line-height: 1.5;
+            font-style: italic;
+        }
+
+        .options-grid {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        .btn-option {
+            background: var(--white);
+            border: 3px solid #E5E7EB; /* Borde más grueso */
+            border-radius: 20px;
+            padding: 20px;
+            font-size: 1.15rem; /* Fuente más grande */
+            font-weight: 700;
+            text-align: left;
+            cursor: pointer;
+            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+            color: var(--text-dark);
+            box-shadow: 0 2px 4px rgba(0,0,0,0.02);
+        }
+
+        .btn-option:active {
+            background: var(--primary-light);
+            border-color: var(--primary);
+            transform: scale(0.96);
+            box-shadow: inset 0 2px 4px rgba(99, 102, 241, 0.1);
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            color: white;
+            border: none;
+            padding: 22px;
+            border-radius: 20px;
+            font-size: 1.2rem;
+            font-weight: 700;
+            width: 100%;
+            box-shadow: var(--shadow-strong);
+            cursor: pointer;
+        }
+
+        .btn-primary:disabled { background: #9CA3AF; cursor: not-allowed; }
+
+        .input-text {
+            width: 100%;
+            padding: 18px;
+            border: 2px solid #E5E7EB;
+            border-radius: 16px;
+            font-size: 1.1rem;
+            margin-top: 10px;
+            outline: none;
+        }
+
+        .input-text:focus { border-color: var(--primary); }
+
+        .error-msg {
+            color: #EF4444;
+            font-size: 0.85rem;
+            margin-top: 8px;
+            font-weight: 600;
+        }
+
+        .hidden { display: none; }
+        
+        .spinner {
+            width: 22px; height: 22px;
+            border: 3px solid rgba(255,255,255,0.3);
+            border-top: 3px solid white;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            display: inline-block;
+            margin-left: 10px;
+        }
+
+        @keyframes spin { to { transform: rotate(360deg); } }
+    </style>
+</head>
+<body>
+
+    <div class="progress-container">
+        <div class="progress-bar" id="progressBar"></div>
+    </div>
+
+    <div class="app-container" id="app"></div>
+
+    <script>
+        const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbz_Rl8NFpEZJQI4rLlR-8ndkZ90WBuNZCV2M2qzGqjuc1sUZUyx6BEM4w7CthjyD92EGA/exec";
+        const SKIP_LABEL = "Omitido por lógica";
+
+        const state = {
+            step: 0,
+            answers: {
+                Fecha: '',
+                Edad: '',
+                Sexo: '',
+                Energia: '',
+                Sueño: '',
+                Estres: '',
+                Foco: '',
+                Estres_Nocturno: SKIP_LABEL,
+                Cambios_Humor: SKIP_LABEL,
+                Fatiga_Mental: SKIP_LABEL,
+                Lagunas_Mentales: SKIP_LABEL,
+                Recuperacion: SKIP_LABEL,
+                Molestias_Fisicas: SKIP_LABEL,
+                Email: ''
+            },
+            queue: [],
+            loading: false
+        };
+
+        const core = [
+            { id: 'welcome', type: 'info', title: 'Chequeo de Bienestar 👋', subtitle: 'Tu salud mental y física es el activo más importante. Vamos a medirla.', btn: 'Empezar ahora' },
+            { id: 'Edad', type: 'choice', title: '¿Cuál es tu rango de edad?', subtitle: 'Cada etapa de la vida tiene desafíos de salud distintos.', options: [{l:'🐣 Menos de 30', v:'Menos 30'}, {l:'👨‍💻 30 - 44 años', v:'30-44'}, {l:'🧘‍♂️ 45 - 60 años', v:'45-60'}, {l:'🌟 60 o más', v:'Mas 60'}] },
+            { id: 'Sexo', type: 'choice', title: '¿Cuál es tu sexo biológico?', subtitle: 'Esto nos permite ajustar parámetros metabólicos y hormonales.', options: [{l:'♂️ Hombre', v:'Hombre'}, {l:'♀️ Mujer', v:'Mujer'}] },
+            { id: 'Energia', type: 'choice', title: '¿Cómo está tu energía hoy?', subtitle: 'Tu energía es el motor de tu productividad y felicidad.', options: [{l:'⚡ A tope, imparable', v:5}, {l:'🔋 Bastante bien', v:4}, {l:'😐 Normal', v:3}, {l:'🐢 Un poco lento', v:2}, {l:'🪫 Agotado', v:1}] },
+            { id: 'Sueño', type: 'choice', title: '¿Qué tal dormiste anoche?', subtitle: 'Un buen descanso repara tu cerebro y tus músculos.', options: [{l:'🛌 Como un bebé', v:'Excelente'}, {l:'😴 Descansé bien', v:'Bueno'}, {l:'🤔 Regular', v:'Regular'}, {l:'😫 No descansé nada', v:'Malo'}] },
+            { id: 'Estres', type: 'choice', title: '¿Nivel de estrés actual?', subtitle: 'Identificar el estrés es el primer paso para dominarlo.', options: [{l:'🧘 Calma total (1)', v:1}, {l:'😌 Bajo control (2)', v:2}, {l:'😐 Algo tenso (3)', v:3}, {l:'😬 Estresado (4)', v:4}, {l:'🤯 Al límite (5)', v:5}] },
+            { id: 'Foco', type: 'choice', title: '¿Y tu foco mental?', subtitle: 'La atención es el superpoder del siglo XXI.', options: [{l:'🎯 Enfoque láser', v:'Alto'}, {l:'💡 Productivo', v:'Medio'}, {l:'🌫️ Neblina mental', v:'Bajo'}] }
+        ];
+
+        const mods = {
+            estres: [
+                { id: 'Estres_Nocturno', type: 'choice', title: '¿Te despiertas pensando en pendientes?', subtitle: 'El cerebro necesita "apagarse" para procesar información.', options: [{l:'🗓️ Sí, seguido', v:'Frecuente'}, {l:'☁️ A veces', v:'A veces'}, {l:'✅ No, duermo bien', v:'Nunca'}] },
+                { id: 'Cambios_Humor', type: 'choice', title: '¿Has tenido cambios de humor?', subtitle: 'Tu estabilidad emocional refleja tu equilibrio interno.', options: [{l:'🎢 Sí, frecuentes', v:'Si'}, {l:'🧘 No, estoy estable', v:'No'}] }
+            ],
+            cognicion: [
+                { id: 'Fatiga_Mental', type: 'choice', title: '¿Sientes fatiga mental rápida?', subtitle: 'La resistencia cognitiva se puede entrenar y mejorar.', options: [{l:'🧠 Sí, me agoto', v:'Si'}, {l:'🛡️ No, aguanto bien', v:'No'}] },
+                { id: 'Lagunas_Mentales', type: 'choice', title: '¿Momentos de olvido?', subtitle: 'Cuidar la memoria es cuidar nuestra identidad.', options: [{l:'🧠 Sí, seguido', v:'Frecuente'}, {l:'🛡️ No', v:'No'}] }
+            ],
+            longevidad: [
+                { id: 'Recuperacion', type: 'choice', title: '¿Tiempo de recuperación?', subtitle: 'Con los años, el cuerpo necesita estrategias de reparación.', options: [{l:'🚀 Rápido', v:'Rapido'}, {l:'🐢 Lento', v:'Lento'}] },
+                { id: 'Molestias_Fisicas', type: 'choice', title: '¿Sientes molestias físicas?', subtitle: 'Escuchar el dolor evita lesiones crónicas futuras.', options: [{l:'🤕 Sí, frecuentes', v:'Si'}, {l:'✨ Rara vez', v:'No'}] }
+            ]
+        };
+
+        function render() {
+            const container = document.getElementById('app');
+            const q = state.queue[state.step];
+            const prog = (state.step / (state.queue.length)) * 100;
+            document.getElementById('progressBar').style.width = `${prog}%`;
+
+            if (!q) { renderFinal(); return; }
+
+            let html = `<div class="card"><div><div class="question-text">${q.title}</div>${q.subtitle ? `<div class="subtitle">${q.subtitle}</div>` : ''}</div>`;
+            
+            if (q.type === 'info') {
+                html += `<button class="btn-primary" onclick="next()">${q.btn}</button>`;
+            } else {
+                html += `<div class="options-grid">`;
+                q.options.forEach(o => {
+                    html += `<button class="btn-option" onclick="save('${q.id}', '${o.v}')">${o.l}</button>`;
+                });
+                html += `</div>`;
+            }
+            container.innerHTML = html + `</div>`;
+        }
+
+        function save(id, v) {
+            state.answers[id] = v;
+            if (id === 'Foco') {
+                if (state.answers.Edad === '45-60' || state.answers.Edad === 'Mas 60') state.queue.push(...mods.longevidad);
+                if (state.answers.Estres > 3) state.queue.push(...mods.estres);
+                if (state.answers.Foco !== 'Alto') state.queue.push(...mods.cognicion);
+            }
+            next();
+        }
+
+        function next() { state.step++; render(); }
+
+        function renderFinal() {
+            document.getElementById('progressBar').style.width = `100%`;
+            document.getElementById('app').innerHTML = `
+                <div class="card">
+                    <div>
+                        <div class="question-text">¡Todo listo! 🎉</div>
+                        <div class="subtitle">Solo falta un detalle para enviarte el análisis completo de tus resultados.</div>
+                        <div style="font-weight:700; margin-bottom:8px; font-size:1rem;">Tu Email:</div>
+                        <input type="email" id="mail" class="input-text" placeholder="ejemplo@correo.com">
+                        <div id="emailError" class="error-msg hidden">⚠️ Por favor, ingresa un correo electrónico válido.</div>
+                    </div>
+                    <button class="btn-primary" id="sendBtn" onclick="send()">
+                        <span id="t">Finalizar y Enviar</span><span id="s" class="spinner hidden"></span>
+                    </button>
+                </div>`;
+        }
+
+        function validateEmail(email) {
+            const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            return re.test(String(email).toLowerCase());
+        }
+
+        async function send() {
+            const emailValue = document.getElementById('mail').value.trim();
+            const errorEl = document.getElementById('emailError');
+
+            if (emailValue !== "" && !validateEmail(emailValue)) {
+                errorEl.classList.remove('hidden');
+                return;
+            } else {
+                errorEl.classList.add('hidden');
+            }
+
+            if (state.loading) return;
+            state.loading = true;
+            document.getElementById('t').innerText = "Enviando...";
+            document.getElementById('s').classList.remove('hidden');
+            
+            state.answers.Email = emailValue || 'Anónimo';
+            state.answers.Fecha = new Date().toLocaleString();
+
+            try {
+                const params = new URLSearchParams(state.answers).toString();
+                await fetch(`${SCRIPT_URL}?${params}`, { method: 'POST', mode: 'no-cors' });
+            } catch (e) { console.error(e); }
+
+            document.getElementById('app').innerHTML = `
+                <div class="card" style="text-align:center; justify-content:center;">
+                    <div style="font-size:4rem; margin-bottom:15px;">✨</div>
+                    <div class="question-text">¡Misión Cumplida!</div>
+                    <div class="subtitle">Tus datos han sido registrados con éxito. Gracias por cuidar tu bienestar.</div>
+                </div>`;
+        }
+
+        state.queue = [...core];
+        render();
+    </script>
+</body>
+</html>
