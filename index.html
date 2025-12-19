@@ -13,8 +13,8 @@
             --text-dark: #1E293B;
             --text-gray: #64748B;
             --white: #ffffff;
-            --shadow-soft: 0 4px 20px -2px rgba(0, 0, 0, 0.05);
-            --radius: 20px;
+            --shadow-soft: 0 10px 30px -5px rgba(0, 0, 0, 0.04);
+            --radius: 24px;
         }
 
         * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
@@ -52,63 +52,75 @@
             justify-content: center;
             align-items: center;
             padding: 20px;
-            max-width: 480px;
+            max-width: 500px;
             margin: 0 auto;
             width: 100%;
         }
 
         .card {
             background: var(--white);
-            padding: 36px 28px;
+            padding: 40px 32px;
             border-radius: var(--radius);
             box-shadow: var(--shadow-soft);
             width: 100%;
-            min-height: 560px;
+            min-height: 620px;
             display: flex;
             flex-direction: column;
             justify-content: space-between;
-            animation: fadeIn 0.4s ease-out;
-            border: 1px solid rgba(226, 232, 240, 0.8);
+            animation: slideUp 0.5s ease-out;
+            border: 1px solid rgba(226, 232, 240, 0.5);
         }
 
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(10px); }
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateY(20px); }
             to { opacity: 1; transform: translateY(0); }
         }
 
+        .brand-header {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+
+        .dot { width: 10px; height: 10px; background: var(--accent); border-radius: 50%; box-shadow: 0 0 10px var(--accent); }
+
         .brand-label {
-            font-size: 0.75rem;
+            font-size: 0.8rem;
             text-transform: uppercase;
-            letter-spacing: 0.12em;
+            letter-spacing: 0.2em;
             color: var(--primary);
-            font-weight: 700;
-            margin-bottom: 8px;
-            display: block;
+            font-weight: 800;
         }
 
         .question-text {
-            font-size: 1.45rem;
+            font-size: 1.6rem;
             font-weight: 700;
             color: var(--text-dark);
-            line-height: 1.3;
-            margin-bottom: 10px;
+            line-height: 1.2;
+            margin-bottom: 12px;
+            letter-spacing: -0.02em;
         }
 
         .subtitle {
             font-size: 0.95rem;
             color: var(--text-gray);
-            margin-bottom: 20px;
+            margin-bottom: 24px;
             line-height: 1.5;
         }
 
-        .consent-box {
-            background: #F8FAFC;
-            padding: 15px;
-            border-radius: 12px;
-            font-size: 0.85rem;
-            color: var(--text-gray);
-            margin-bottom: 20px;
+        .insight-box {
+            background: #EEF2FF;
             border-left: 4px solid var(--primary);
+            padding: 16px;
+            border-radius: 0 16px 16px 0;
+            font-size: 0.88rem;
+            color: #3730A3;
+            margin-bottom: 24px;
+            display: flex;
+            gap: 10px;
+            line-height: 1.4;
+            font-style: italic;
         }
 
         .options-grid {
@@ -120,49 +132,56 @@
         .btn-option {
             background: #F8FAFC;
             border: 2px solid #F1F5F9; 
-            border-radius: 14px;
-            padding: 14px 18px;
+            border-radius: 16px;
+            padding: 16px 20px;
             font-size: 0.95rem; 
             font-weight: 600;
             text-align: left;
             cursor: pointer;
             transition: all 0.2s ease;
             color: var(--text-dark);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
         }
 
-        .btn-option:hover { border-color: var(--primary); background: var(--white); }
+        .btn-option:hover {
+            border-color: var(--primary);
+            background: #EEF2FF;
+            transform: translateX(6px);
+        }
 
         .btn-primary {
             background: var(--primary);
             color: white;
             border: none;
-            padding: 18px;
-            border-radius: 14px;
-            font-size: 1.05rem;
-            font-weight: 600;
+            padding: 20px;
+            border-radius: 18px;
+            font-size: 1.1rem;
+            font-weight: 700;
             width: 100%;
             cursor: pointer;
+            box-shadow: 0 10px 20px -5px rgba(79, 70, 229, 0.4);
         }
 
         .input-text {
             width: 100%;
-            padding: 16px;
+            padding: 18px;
             border: 2px solid #E2E8F0;
-            border-radius: 12px;
+            border-radius: 16px;
             font-size: 1rem;
             outline: none;
+            margin-top: 10px;
         }
 
         .hidden { display: none; }
         .spinner {
-            width: 20px; height: 20px;
-            border: 2px solid rgba(255,255,255,0.3);
-            border-top: 2px solid white;
+            width: 22px; height: 22px;
+            border: 3px solid rgba(255,255,255,0.3);
+            border-top: 3px solid white;
             border-radius: 50%;
             animation: spin 0.8s linear infinite;
             display: inline-block;
-            margin-left: 10px;
-            vertical-align: middle;
         }
         @keyframes spin { to { transform: rotate(360deg); } }
     </style>
@@ -177,29 +196,16 @@
 
     <script>
         const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbz_Rl8NFpEZJQI4rLlR-8ndkZ90WBuNZCV2M2qzGqjuc1sUZUyx6BEM4w7CthjyD92EGA/exec";
-        
-        // Mensaje estándar para celdas que no corresponden al camino del usuario
         const NO_APLICA = "No corresponde por perfil";
 
         const state = {
             step: 0,
             answers: {
-                Fecha: '', 
-                Edad: '', 
-                Sexo: '', 
-                Trabajo: '', 
-                Pantalla: '',
-                Energia: '', 
-                Sueño: '', 
-                Estres: '', 
-                Foco: '',
-                Estres_Nocturno: NO_APLICA, 
-                Cambios_Humor: NO_APLICA,
-                Fatiga_Mental: NO_APLICA, 
-                Lagunas_Mentales: NO_APLICA,
-                Recuperacion: NO_APLICA, 
-                Molestias_Fisicas: NO_APLICA, 
-                Email: 'No proporcionado'
+                Fecha: '', Edad: '', Sexo: '', Trabajo: '', Pantalla: '',
+                Energia: '', Sueño: '', Estres: '', Foco: '',
+                Estres_Nocturno: NO_APLICA, Cambios_Humor: NO_APLICA,
+                Fatiga_Mental: NO_APLICA, Lagunas_Mentales: NO_APLICA,
+                Recuperacion: NO_APLICA, Molestias_Fisicas: NO_APLICA, Email: ''
             },
             queue: [],
             loading: false
@@ -209,33 +215,83 @@
             { 
                 id: 'welcome', 
                 type: 'info', 
-                title: 'Bienvenido a Essencia Vital', 
-                subtitle: 'Observamos datos funcionales para diseñar soluciones de bienestar más precisas y humanas.',
-                consent: 'Acepto participar voluntariamente y autorizo el uso anonimizado de mis respuestas para análisis. Entiendo que esto no reemplaza una evaluación médica.',
-                btn: 'Acepto y comienzo' 
+                title: 'Essencia Vital Biotech', 
+                subtitle: '¿Qué pasaría si pudieras escuchar lo que tu cuerpo intenta decirte? Iniciamos un proceso de observación funcional para mapear tu perfil biológico único.',
+                btn: 'Despertar mi curiosidad' 
             },
-            { id: 'Edad', type: 'choice', title: 'Rango etario', subtitle: 'La edad biológica influye en la respuesta metabólica.', options: [{l:'🐣 18 a 34 años', v:'18-34'}, {l:'👨‍💻 35 a 44 años', v:'35-44'}, {l:'🧘‍♂️ 45 a 60 años', v:'45-60'}, {l:'🌟 Más de 60 años', v:'Mas 60'}] },
-            { id: 'Sexo', type: 'choice', title: 'Sexo biológico', subtitle: 'Dato necesario para identificar perfiles fisiológicos.', options: [{l:'Femenino', v:'Femenino'}, {l:'Masculino', v:'Masculino'}, {l:'Otro', v:'Otro'}, {l:'No responder', v:'No_Responde'}] },
-            { id: 'Trabajo', type: 'choice', title: 'Actividad principal', subtitle: 'Tu entorno laboral define gran parte de tu gasto energético.', options: [{l:'🪑 Sedentario', v:'Sedentario'}, {l:'🏃 Mixto', v:'Mixto'}, {l:'💪 Físico intenso', v:'Fisico'}] },
-            { id: 'Pantalla', type: 'choice', title: 'Exposición digital', subtitle: 'Horas estimadas frente a dispositivos al día.', options: [{l:'☀️ < 4h', v:'<4'}, {l:'⛅ 4 a 8h', v:'4-8'}, {l:'🌑 > 8h', v:'>8'}] },
-            { id: 'Energia', type: 'choice', title: 'Energía diaria', subtitle: 'Observar tu vitalidad ayuda a entender tu ritmo metabólico.', options: [{l:'⚡ Plena', v:5}, {l:'🔋 Estable', v:4}, {l:'😐 Regular', v:3}, {l:'🐢 Baja', v:2}] },
-            { id: 'Sueño', type: 'choice', title: 'Calidad del sueño', subtitle: 'La profundidad del descanso es un indicador de reparación.', options: [{l:'🛌 Reparador', v:'Excelente'}, {l:'😴 Suficiente', v:'Bueno'}, {l:'🤔 Irregular', v:'Regular'}, {l:'😫 Pobre', v:'Malo'}] },
-            { id: 'Estres', type: 'choice', title: 'Nivel de estrés', subtitle: 'Percepción de tensión en tu entorno actual.', options: [{l:'🧘 Calma (1-2)', v:2}, {l:'😐 Moderado (3)', v:3}, {l:'🤯 Alto (4-5)', v:5}] },
-            { id: 'Foco', type: 'choice', title: 'Claridad mental', subtitle: 'Capacidad de enfoque en tareas demandantes.', options: [{l:'🎯 Enfoque nítido', v:'Alto'}, {l:'💡 Fluido', v:'Medio'}, {l:'Disperso', v:'Bajo'}] }
+            { 
+                id: 'Edad', 
+                type: 'choice', 
+                title: 'Etapa de Vida', 
+                subtitle: 'El tiempo redefine nuestra arquitectura biológica. ¿En qué fase de tu evolución te encuentras?',
+                options: [{l:'🐣 18 a 34 años', v:'18-34'}, {l:'👨‍💻 35 a 44 años', v:'35-44'}, {l:'🧘‍♂️ 45 a 60 años', v:'45-60'}, {l:'🌟 Más de 60 años', v:'Mas 60'}] 
+            },
+            { 
+                id: 'Sexo', 
+                type: 'choice', 
+                title: 'Identidad Biológica', 
+                subtitle: 'Las rutas metabólicas y el balance hormonal varían según nuestro perfil de nacimiento.',
+                options: [{l:'♀️ Femenino', v:'Femenino'}, {l:'♂️ Masculino', v:'Masculino'}, {l:'🔒 Prefiero no responder', v:'No definido'}] 
+            },
+            { 
+                id: 'Trabajo', 
+                type: 'choice', 
+                title: 'Entorno de Actividad', 
+                subtitle: '¿Cómo es tu dinámica diaria dominante? Tu postura dicta tu respuesta inflamatoria.',
+                options: [{l:'🪑 Sedentario (Oficina)', v:'Sedentario'}, {l:'🏃 Mixto (Movimiento)', v:'Mixto'}, {l:'💪 Físico Intenso', v:'Fisico'}] 
+            },
+            { 
+                id: 'Pantalla', 
+                type: 'choice', 
+                title: 'Exposición Digital', 
+                subtitle: 'La luz azul y la sobreestimulación visual afectan directamente tu ritmo circadiano.',
+                options: [{l:'📱 Menos de 4h', v:'Baja'}, {l:'💻 4 a 8h', v:'Media'}, {l:'📡 Más de 8h', v:'Alta'}] 
+            },
+            { 
+                id: 'Energia', 
+                type: 'choice', 
+                title: 'Tu Motor Interno', 
+                subtitle: '¿Cómo calificarías tu disponibilidad de energía real para enfrentar tus desafíos diarios?',
+                insight: 'La energía no es solo descanso; es la eficiencia de tus mitocondrias transformando nutrientes en vitalidad.',
+                options: [{l:'⚡ Plena', v:5}, {l:'🔋 Estable', v:4}, {l:'😐 Regular', v:3}, {l:'🐢 Baja', v:2}] 
+            },
+            { 
+                id: 'Sueño', 
+                type: 'choice', 
+                title: 'Reparación Silenciosa', 
+                subtitle: 'El sueño es el taller donde tu cuerpo se reconstruye. ¿Qué tan efectiva es tu pausa?',
+                insight: 'Un sueño interrumpido impide que el sistema de limpieza cerebral (glinfático) complete su ciclo.',
+                options: [{l:'🛌 Reparador', v:'Excelente'}, {l:'😴 Suficiente', v:'Bueno'}, {l:'🤔 Irregular', v:'Regular'}, {l:'😫 Pobre', v:'Malo'}] 
+            },
+            { 
+                id: 'Estres', 
+                type: 'choice', 
+                title: 'Carga de Estrés', 
+                subtitle: 'El estrés es química pura. ¿Cuánta tensión percibe tu sistema nervioso actualmente?',
+                insight: 'El cortisol elevado de forma sostenida agota tus reservas de antioxidantes esenciales.',
+                options: [{l:'🧘 Calma (1-2)', v:2}, {l:'😐 Moderado (3)', v:3}, {l:'🤯 Alto (4-5)', v:5}] 
+            },
+            { 
+                id: 'Foco', 
+                type: 'choice', 
+                title: 'Claridad y Enfoque', 
+                subtitle: 'La niebla mental es el resultado de un cerebro intentando operar bajo micro-inflamación.',
+                options: [{l:'🎯 Nítido', v:'Alto'}, {l:'💡 Fluido', v:'Medio'}, {l:'🌫️ Disperso', v:'Bajo'}] 
+            }
         ];
 
-        const extraModules = {
+        const deepDive = {
             estres: [
-                { id: 'Estres_Nocturno', type: 'choice', title: 'Actividad nocturna', subtitle: '¿Sientes que tu mente sigue activa al intentar dormir?', options: [{l:'🌙 Frecuente', v:'Si'}, {l:'✅ Rara vez', v:'No'}] },
-                { id: 'Cambios_Humor', type: 'choice', title: 'Estabilidad del ánimo', subtitle: '¿Has notado variaciones frecuentes en tu humor?', options: [{l:'🎢 Sí', v:'Si'}, {l:'🧘 No', v:'No'}] }
+                { id: 'Estres_Nocturno', type: 'choice', title: 'Persistencia Mental', subtitle: '¿Sientes que tu mente persiste activa incluso al intentar la pausa nocturna?', insight: 'La incapacidad de desconectar sugiere que tu balance de melatonina está siendo bloqueado por cortisol residual.', options: [{l:'🌙 Sí, frecuente', v:'Si'}, {l:'✅ No, desconecto', v:'No'}] },
+                { id: 'Cambios_Humor', type: 'choice', title: 'Estabilidad Emocional', subtitle: '¿Notas variaciones en tu estado de ánimo sin una causa externa clara?', options: [{l:'🎢 Sí, a veces', v:'Si'}, {l:'🧘 No, estable', v:'No'}] }
             ],
             cognitivo: [
-                { id: 'Fatiga_Mental', type: 'choice', title: 'Cansancio cognitivo', subtitle: '¿Sientes agotamiento mental antes de terminar el día?', options: [{l:'🧠 Sí, frecuente', v:'Si'}, {l:'🛡️ No realmente', v:'No'}] },
-                { id: 'Lagunas_Mentales', type: 'choice', title: 'Presencia', subtitle: '¿Experimentas lapsos de olvido o distracción?', options: [{l:'🧠 A veces', v:'Si'}, {l:'🛡️ No', v:'No'}] }
+                { id: 'Fatiga_Mental', type: 'choice', title: 'Resistencia Cognitiva', subtitle: '¿Aparece el agotamiento mental antes de que termine tu jornada?', insight: 'El agotamiento precoz es la señal de alarma de una inflamación sistémica afectando tu rendimiento.', options: [{l:'🧠 Sí, aparece pronto', v:'Si'}, {l:'🛡️ No, resisto bien', v:'No'}] },
+                { id: 'Lagunas_Mentales', type: 'choice', title: 'Presencia Mental', subtitle: '¿Experimentas lapsos de olvido o distracciones momentáneas?', options: [{l:'🧠 A veces', v:'Si'}, {l:'🛡️ No, presente', v:'No'}] }
             ],
             longevidad: [
-                { id: 'Recuperacion', type: 'choice', title: 'Capacidad de recuperación', subtitle: 'Tiempo estimado para volver a la calma tras el esfuerzo.', options: [{l:'🚀 Rápida', v:'Rapida'}, {l:'🐢 Lenta', v:'Lenta'}] },
-                { id: 'Molestias_Fisicas', type: 'choice', title: 'Sensibilidad física', subtitle: '¿Sientes molestias recurrentes sin causa aparente?', options: [{l:'🤕 Sí', v:'Si'}, {l:'✨ No', v:'No'}] }
+                { id: 'Recuperacion', type: 'choice', title: 'Capacidad de Retorno', subtitle: '¿Qué tan rápido recuperas el equilibrio tras un esfuerzo físico o emocional?', options: [{l:'🚀 Rápida', v:'Rapida'}, {l:'🐢 Lenta', v:'Lenta'}] },
+                { id: 'Molestias_Fisicas', type: 'choice', title: 'Sensibilidad Corporal', subtitle: '¿Existen molestias físicas recurrentes en articulaciones o espalda?', insight: 'El dolor sin trauma suele ser el lenguaje de una inflamación instalada en el tejido conectivo.', options: [{l:'🤕 Sí, existen', v:'Si'}, {l:'✨ No, me siento bien', v:'No'}] }
             ]
         };
 
@@ -249,10 +305,10 @@
 
             let html = `<div class="card">
                 <div>
-                    <span class="brand-label">Essencia Vital</span>
+                    <div class="brand-header"><div class="dot"></div><span class="brand-label">Análisis Funcional</span></div>
                     <div class="question-text">${q.title}</div>
                     <div class="subtitle">${q.subtitle || ''}</div>
-                    ${q.consent ? `<div class="consent-box">${q.consent}</div>` : ''}
+                    ${q.insight ? `<div class="insight-box"><span>✦</span><div>${q.insight}</div></div>` : ''}
                 </div>`;
             
             if (q.type === 'info') {
@@ -260,7 +316,7 @@
             } else {
                 html += `<div class="options-grid">`;
                 q.options.forEach(o => {
-                    html += `<button class="btn-option" onclick="save('${q.id}', '${o.v}')">${o.l}</button>`;
+                    html += `<button class="btn-option" onclick="save('${q.id}', '${o.v}')"><span>${o.l}</span><span>→</span></button>`;
                 });
                 html += `</div>`;
             }
@@ -269,16 +325,10 @@
 
         function save(id, v) {
             state.answers[id] = v;
-            // Al responder la última pregunta base (Foco), decidimos los extras
             if (id === 'Foco') {
-                let extrasParaAgregar = [];
-                if (state.answers.Estres >= 4) extrasParaAgregar.push(...extraModules.estres);
-                if (state.answers.Foco === 'Bajo') extrasParaAgregar.push(...extraModules.cognitivo);
-                if (state.answers.Edad === '45-60' || state.answers.Edad === 'Mas 60') extrasParaAgregar.push(...extraModules.longevidad);
-                
-                if(extrasParaAgregar.length > 0) {
-                    state.queue.push(...extrasParaAgregar);
-                }
+                if (state.answers.Estres >= 4) state.queue.push(...deepDive.estres);
+                if (state.answers.Foco === 'Bajo') state.queue.push(...deepDive.cognitivo);
+                if (state.answers.Edad === '45-60' || state.answers.Edad === 'Mas 60') state.queue.push(...deepDive.longevidad);
             }
             next();
         }
@@ -290,14 +340,14 @@
             document.getElementById('app').innerHTML = `
                 <div class="card">
                     <div>
-                        <span class="brand-label">Essencia Vital</span>
-                        <div class="question-text">Apreciamos tu aporte</div>
-                        <div class="subtitle">Tus respuestas nos ayudan a diseñar bienestar con precisión biotecnológica.</div>
-                        <div style="font-weight:600; margin-bottom:8px; font-size:0.9rem;">Email (opcional):</div>
-                        <input type="email" id="mail" class="input-text" placeholder="Para recibir tu perfil">
+                        <div class="brand-header"><div class="dot"></div><span class="brand-label">Fase de Integración</span></div>
+                        <div class="question-text">Observación Completada</div>
+                        <div class="subtitle">Hemos mapeado tus vectores biológicos. Para recibir tu reporte personalizado de Essencia Vital, ingresa tu email de contacto.</div>
+                        <div style="font-weight:700; margin-bottom:12px; font-size:0.9rem; color:var(--primary);">EMAIL PARA TU REPORTE:</div>
+                        <input type="email" id="mail" class="input-text" placeholder="ejemplo@correo.com">
                     </div>
                     <button class="btn-primary" id="sendBtn" onclick="send()">
-                        <span id="t">Finalizar</span><span id="s" class="spinner hidden"></span>
+                        <span id="t">Activar mi Perfil Funcional</span><span id="s" class="spinner hidden"></span>
                     </button>
                 </div>`;
         }
@@ -305,11 +355,10 @@
         async function send() {
             if (state.loading) return;
             state.loading = true;
-            document.getElementById('t').innerText = "Procesando...";
+            document.getElementById('t').innerText = "Procesando datos...";
             document.getElementById('s').classList.remove('hidden');
             
-            const emailInp = document.getElementById('mail').value.trim();
-            if(emailInp) state.answers.Email = emailInp;
+            state.answers.Email = document.getElementById('mail').value || 'Anónimo';
             state.answers.Fecha = new Date().toLocaleString('es-ES');
 
             try {
@@ -318,10 +367,13 @@
             } catch (e) { console.error(e); }
 
             document.getElementById('app').innerHTML = `
-                <div class="card" style="text-align:center; justify-content:center;">
-                    <div style="font-size:3rem; margin-bottom:20px;">🌿</div>
-                    <div class="question-text">Completado</div>
-                    <div class="subtitle">Gracias por ser parte de Essencia Vital. Tus datos han sido procesados.</div>
+                <div class="card" style="text-align:center; justify-content:center; align-items:center;">
+                    <div style="font-size:4.5rem; margin-bottom:24px;">🧬</div>
+                    <div class="question-text">Perfil Integrado</div>
+                    <div class="subtitle">Tus datos biológicos ya forman parte de nuestra base de análisis funcional. El reporte será enviado a tu bandeja de entrada.</div>
+                    <div class="insight-box" style="background:#F0FDF4; border-color:#22C55E; color:#166534; font-style:normal; border-left:4px solid #166534;">
+                        Has dado el primer paso hacia una consciencia biológica superior.
+                    </div>
                 </div>`;
         }
 
