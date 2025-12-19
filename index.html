@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Essencia Vital | Observación de Bienestar</title>
+    <title>Essencia Vital | Observación Funcional</title>
     <style>
         :root {
             --primary: #4F46E5; 
@@ -59,15 +59,15 @@
 
         .card {
             background: var(--white);
-            padding: 40px 32px;
+            padding: 36px 28px;
             border-radius: var(--radius);
             box-shadow: var(--shadow-soft);
             width: 100%;
-            min-height: 520px;
+            min-height: 560px;
             display: flex;
             flex-direction: column;
             justify-content: space-between;
-            animation: fadeIn 0.5s ease-out;
+            animation: fadeIn 0.4s ease-out;
             border: 1px solid rgba(226, 232, 240, 0.8);
         }
 
@@ -79,7 +79,7 @@
         .brand-label {
             font-size: 0.75rem;
             text-transform: uppercase;
-            letter-spacing: 0.15em;
+            letter-spacing: 0.12em;
             color: var(--primary);
             font-weight: 700;
             margin-bottom: 8px;
@@ -87,33 +87,42 @@
         }
 
         .question-text {
-            font-size: 1.5rem;
+            font-size: 1.45rem;
             font-weight: 700;
             color: var(--text-dark);
             line-height: 1.3;
-            margin-bottom: 12px;
-            letter-spacing: -0.01em;
+            margin-bottom: 10px;
         }
 
         .subtitle {
-            font-size: 1rem;
+            font-size: 0.95rem;
             color: var(--text-gray);
-            margin-bottom: 30px;
-            line-height: 1.6;
+            margin-bottom: 20px;
+            line-height: 1.5;
+        }
+
+        .consent-box {
+            background: #F8FAFC;
+            padding: 15px;
+            border-radius: 12px;
+            font-size: 0.85rem;
+            color: var(--text-gray);
+            margin-bottom: 20px;
+            border-left: 4px solid var(--primary);
         }
 
         .options-grid {
             display: flex;
             flex-direction: column;
-            gap: 12px;
+            gap: 10px;
         }
 
         .btn-option {
             background: #F8FAFC;
             border: 2px solid #F1F5F9; 
-            border-radius: 16px;
-            padding: 18px 20px;
-            font-size: 1.05rem; 
+            border-radius: 14px;
+            padding: 14px 18px;
+            font-size: 0.95rem; 
             font-weight: 600;
             text-align: left;
             cursor: pointer;
@@ -121,53 +130,30 @@
             color: var(--text-dark);
         }
 
-        .btn-option:hover {
-            border-color: var(--primary);
-            background: var(--white);
-        }
-
-        .btn-option:active {
-            transform: scale(0.98);
-            background: #EEF2FF;
-        }
+        .btn-option:hover { border-color: var(--primary); background: var(--white); }
 
         .btn-primary {
             background: var(--primary);
             color: white;
             border: none;
-            padding: 20px;
-            border-radius: 16px;
-            font-size: 1.1rem;
+            padding: 18px;
+            border-radius: 14px;
+            font-size: 1.05rem;
             font-weight: 600;
             width: 100%;
             cursor: pointer;
-            transition: background 0.3s;
         }
-
-        .btn-primary:hover { background: var(--primary-dark); }
 
         .input-text {
             width: 100%;
-            padding: 18px;
+            padding: 16px;
             border: 2px solid #E2E8F0;
-            border-radius: 14px;
+            border-radius: 12px;
             font-size: 1rem;
-            margin-top: 10px;
             outline: none;
-            transition: border-color 0.3s;
-        }
-
-        .input-text:focus { border-color: var(--primary); }
-
-        .error-msg {
-            color: #DC2626;
-            font-size: 0.85rem;
-            margin-top: 10px;
-            font-weight: 500;
         }
 
         .hidden { display: none; }
-        
         .spinner {
             width: 20px; height: 20px;
             border: 2px solid rgba(255,255,255,0.3);
@@ -178,7 +164,6 @@
             margin-left: 10px;
             vertical-align: middle;
         }
-
         @keyframes spin { to { transform: rotate(360deg); } }
     </style>
 </head>
@@ -192,53 +177,65 @@
 
     <script>
         const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbz_Rl8NFpEZJQI4rLlR-8ndkZ90WBuNZCV2M2qzGqjuc1sUZUyx6BEM4w7CthjyD92EGA/exec";
-        const SKIP_LABEL = "Omitido por diseño";
+        
+        // Mensaje estándar para celdas que no corresponden al camino del usuario
+        const NO_APLICA = "No corresponde por perfil";
 
         const state = {
             step: 0,
             answers: {
-                Fecha: '',
-                Edad: '',
-                Sexo: '',
-                Energia: '',
-                Sueño: '',
-                Estres: '',
+                Fecha: '', 
+                Edad: '', 
+                Sexo: '', 
+                Trabajo: '', 
+                Pantalla: '',
+                Energia: '', 
+                Sueño: '', 
+                Estres: '', 
                 Foco: '',
-                Estres_Nocturno: SKIP_LABEL,
-                Cambios_Humor: SKIP_LABEL,
-                Fatiga_Mental: SKIP_LABEL,
-                Lagunas_Mentales: SKIP_LABEL,
-                Recuperacion: SKIP_LABEL,
-                Molestias_Fisicas: SKIP_LABEL,
-                Email: ''
+                Estres_Nocturno: NO_APLICA, 
+                Cambios_Humor: NO_APLICA,
+                Fatiga_Mental: NO_APLICA, 
+                Lagunas_Mentales: NO_APLICA,
+                Recuperacion: NO_APLICA, 
+                Molestias_Fisicas: NO_APLICA, 
+                Email: 'No proporcionado'
             },
             queue: [],
             loading: false
         };
 
         const core = [
-            { id: 'welcome', type: 'info', title: 'Bienvenido a Essencia Vital', subtitle: 'Estudiamos cómo se sienten las personas para diseñar soluciones de bienestar más precisas y humanas.', btn: 'Comenzar observación' },
-            { id: 'Edad', type: 'choice', title: '¿En qué etapa te encuentras?', subtitle: 'El paso del tiempo redefine nuestras necesidades biológicas.', options: [{l:'🐣 Menos de 30 años', v:'Menos 30'}, {l:'👨‍💻 30 a 44 años', v:'30-44'}, {l:'🧘‍♂️ 45 a 60 años', v:'45-60'}, {l:'🌟 Más de 60 años', v:'Mas 60'}] },
-            { id: 'Sexo', type: 'choice', title: 'Género', subtitle: 'Nos permite identificar patrones específicos en diferentes perfiles.', options: [{l:'Femenino', v:'Femenino'}, {l:'Masculino', v:'Masculino'}, {l:'Otro', v:'Otro'}, {l:'Prefiero no responder', v:'No_Responde'}] },
-            { id: 'Energia', type: 'choice', title: 'Tu energía diaria', subtitle: 'Observar tu vitalidad nos ayuda a comprender tu ritmo actual.', options: [{l:'⚡ Plena y constante', v:5}, {l:'🔋 Estable', v:4}, {l:'😐 Regular', v:3}, {l:'🐢 Disminuida', v:2}, {l:'🪫 Muy baja', v:1}] },
-            { id: 'Sueño', type: 'choice', title: 'Calidad del descanso', subtitle: 'El sueño es la pausa necesaria para el equilibrio funcional.', options: [{l:'🛌 Reparador', v:'Excelente'}, {l:'😴 Suficiente', v:'Bueno'}, {l:'🤔 Interrumpido', v:'Regular'}, {l:'😫 No reparador', v:'Malo'}] },
-            { id: 'Estres', type: 'choice', title: 'Presión y entorno', subtitle: 'Entender cómo procesas tu entorno es clave para el diseño consciente.', options: [{l:'🧘 Calma (1)', v:1}, {l:'😌 Controlado (2)', v:2}, {l:'😐 Presente (3)', v:3}, {l:'😬 Elevado (4)', v:4}, {l:'🤯 Al límite (5)', v:5}] },
-            { id: 'Foco', type: 'choice', title: 'Claridad mental', subtitle: 'La capacidad de enfoque determina nuestra interacción con el mundo.', options: [{l:'🎯 Enfoque nítido', v:'Alto'}, {l:'💡 Fluido', v:'Medio'}, {l:'🌫️ Disperso', v:'Bajo'}] }
+            { 
+                id: 'welcome', 
+                type: 'info', 
+                title: 'Bienvenido a Essencia Vital', 
+                subtitle: 'Observamos datos funcionales para diseñar soluciones de bienestar más precisas y humanas.',
+                consent: 'Acepto participar voluntariamente y autorizo el uso anonimizado de mis respuestas para análisis. Entiendo que esto no reemplaza una evaluación médica.',
+                btn: 'Acepto y comienzo' 
+            },
+            { id: 'Edad', type: 'choice', title: 'Rango etario', subtitle: 'La edad biológica influye en la respuesta metabólica.', options: [{l:'🐣 18 a 34 años', v:'18-34'}, {l:'👨‍💻 35 a 44 años', v:'35-44'}, {l:'🧘‍♂️ 45 a 60 años', v:'45-60'}, {l:'🌟 Más de 60 años', v:'Mas 60'}] },
+            { id: 'Sexo', type: 'choice', title: 'Sexo biológico', subtitle: 'Dato necesario para identificar perfiles fisiológicos.', options: [{l:'Femenino', v:'Femenino'}, {l:'Masculino', v:'Masculino'}, {l:'Otro', v:'Otro'}, {l:'No responder', v:'No_Responde'}] },
+            { id: 'Trabajo', type: 'choice', title: 'Actividad principal', subtitle: 'Tu entorno laboral define gran parte de tu gasto energético.', options: [{l:'🪑 Sedentario', v:'Sedentario'}, {l:'🏃 Mixto', v:'Mixto'}, {l:'💪 Físico intenso', v:'Fisico'}] },
+            { id: 'Pantalla', type: 'choice', title: 'Exposición digital', subtitle: 'Horas estimadas frente a dispositivos al día.', options: [{l:'☀️ < 4h', v:'<4'}, {l:'⛅ 4 a 8h', v:'4-8'}, {l:'🌑 > 8h', v:'>8'}] },
+            { id: 'Energia', type: 'choice', title: 'Energía diaria', subtitle: 'Observar tu vitalidad ayuda a entender tu ritmo metabólico.', options: [{l:'⚡ Plena', v:5}, {l:'🔋 Estable', v:4}, {l:'😐 Regular', v:3}, {l:'🐢 Baja', v:2}] },
+            { id: 'Sueño', type: 'choice', title: 'Calidad del sueño', subtitle: 'La profundidad del descanso es un indicador de reparación.', options: [{l:'🛌 Reparador', v:'Excelente'}, {l:'😴 Suficiente', v:'Bueno'}, {l:'🤔 Irregular', v:'Regular'}, {l:'😫 Pobre', v:'Malo'}] },
+            { id: 'Estres', type: 'choice', title: 'Nivel de estrés', subtitle: 'Percepción de tensión en tu entorno actual.', options: [{l:'🧘 Calma (1-2)', v:2}, {l:'😐 Moderado (3)', v:3}, {l:'🤯 Alto (4-5)', v:5}] },
+            { id: 'Foco', type: 'choice', title: 'Claridad mental', subtitle: 'Capacidad de enfoque en tareas demandantes.', options: [{l:'🎯 Enfoque nítido', v:'Alto'}, {l:'💡 Fluido', v:'Medio'}, {l:'Disperso', v:'Bajo'}] }
         ];
 
-        const mods = {
-            transicion: { id: 'trans', type: 'info', title: 'Ampliando la mirada', subtitle: 'Basado en tus respuestas, profundizaremos brevemente en algunos aspectos específicos.', btn: 'Continuar' },
+        const extraModules = {
             estres: [
-                { id: 'Estres_Nocturno', type: 'choice', title: 'La pausa nocturna', subtitle: 'Observamos si la actividad mental persiste durante el descanso.', options: [{l:'🗓️ Frecuente', v:'Frecuente'}, {l:'☁️ Ocasional', v:'A veces'}, {l:'✅ Inexistente', v:'Nunca'}] },
-                { id: 'Cambios_Humor', type: 'choice', title: 'Estabilidad emocional', subtitle: 'La variabilidad del ánimo es un indicador de la respuesta al estrés.', options: [{l:'🎢 Variable', v:'Si'}, {l:'🧘 Estable', v:'No'}] }
+                { id: 'Estres_Nocturno', type: 'choice', title: 'Actividad nocturna', subtitle: '¿Sientes que tu mente sigue activa al intentar dormir?', options: [{l:'🌙 Frecuente', v:'Si'}, {l:'✅ Rara vez', v:'No'}] },
+                { id: 'Cambios_Humor', type: 'choice', title: 'Estabilidad del ánimo', subtitle: '¿Has notado variaciones frecuentes en tu humor?', options: [{l:'🎢 Sí', v:'Si'}, {l:'🧘 No', v:'No'}] }
             ],
-            cognicion: [
-                { id: 'Fatiga_Mental', type: 'choice', title: 'Resistencia cognitiva', subtitle: 'Identificamos la rapidez con la que aparece el cansancio mental.', options: [{l:'🧠 Aparece pronto', v:'Si'}, {l:'🛡️ Se mantiene bien', v:'No'}] },
-                { id: 'Lagunas_Mentales', type: 'choice', title: 'Presencia y memoria', subtitle: 'Observamos pequeños lapsos de atención en la rutina diaria.', options: [{l:'🧠 Ocurren a veces', v:'Frecuente'}, {l:'🛡️ No se perciben', v:'No'}] }
+            cognitivo: [
+                { id: 'Fatiga_Mental', type: 'choice', title: 'Cansancio cognitivo', subtitle: '¿Sientes agotamiento mental antes de terminar el día?', options: [{l:'🧠 Sí, frecuente', v:'Si'}, {l:'🛡️ No realmente', v:'No'}] },
+                { id: 'Lagunas_Mentales', type: 'choice', title: 'Presencia', subtitle: '¿Experimentas lapsos de olvido o distracción?', options: [{l:'🧠 A veces', v:'Si'}, {l:'🛡️ No', v:'No'}] }
             ],
             longevidad: [
-                { id: 'Recuperacion', type: 'choice', title: 'Ritmo de recuperación', subtitle: 'Entender cómo el cuerpo vuelve a su centro tras el esfuerzo.', options: [{l:'🚀 Dinámico', v:'Rapido'}, {l:'🐢 Pausado', v:'Lento'}] },
-                { id: 'Molestias_Fisicas', type: 'choice', title: 'Sensibilidad física', subtitle: 'El cuerpo comunica su estado a través de sensaciones sutiles.', options: [{l:'🤕 Sensaciones frecuentes', v:'Si'}, {l:'✨ Sin molestias', v:'No'}] }
+                { id: 'Recuperacion', type: 'choice', title: 'Capacidad de recuperación', subtitle: 'Tiempo estimado para volver a la calma tras el esfuerzo.', options: [{l:'🚀 Rápida', v:'Rapida'}, {l:'🐢 Lenta', v:'Lenta'}] },
+                { id: 'Molestias_Fisicas', type: 'choice', title: 'Sensibilidad física', subtitle: '¿Sientes molestias recurrentes sin causa aparente?', options: [{l:'🤕 Sí', v:'Si'}, {l:'✨ No', v:'No'}] }
             ]
         };
 
@@ -254,7 +251,8 @@
                 <div>
                     <span class="brand-label">Essencia Vital</span>
                     <div class="question-text">${q.title}</div>
-                    ${q.subtitle ? `<div class="subtitle">${q.subtitle}</div>` : ''}
+                    <div class="subtitle">${q.subtitle || ''}</div>
+                    ${q.consent ? `<div class="consent-box">${q.consent}</div>` : ''}
                 </div>`;
             
             if (q.type === 'info') {
@@ -271,15 +269,15 @@
 
         function save(id, v) {
             state.answers[id] = v;
+            // Al responder la última pregunta base (Foco), decidimos los extras
             if (id === 'Foco') {
-                let extra = [];
-                if (state.answers.Edad === '45-60' || state.answers.Edad === 'Mas 60') extra.push(...mods.longevidad);
-                if (state.answers.Estres > 3) extra.push(...mods.estres);
-                if (state.answers.Foco !== 'Alto') extra.push(...mods.cognicion);
+                let extrasParaAgregar = [];
+                if (state.answers.Estres >= 4) extrasParaAgregar.push(...extraModules.estres);
+                if (state.answers.Foco === 'Bajo') extrasParaAgregar.push(...extraModules.cognitivo);
+                if (state.answers.Edad === '45-60' || state.answers.Edad === 'Mas 60') extrasParaAgregar.push(...extraModules.longevidad);
                 
-                if (extra.length > 0) {
-                    state.queue.push(mods.transicion);
-                    state.queue.push(...extra);
+                if(extrasParaAgregar.length > 0) {
+                    state.queue.push(...extrasParaAgregar);
                 }
             }
             next();
@@ -293,36 +291,26 @@
                 <div class="card">
                     <div>
                         <span class="brand-label">Essencia Vital</span>
-                        <div class="question-text">Gracias por tu aporte</div>
-                        <div class="subtitle">Apreciamos tu tiempo. Tus respuestas nos ayudan a diseñar un bienestar más humano y preciso.</div>
-                        <div style="font-weight:600; margin-bottom:8px; font-size:0.9rem; color:var(--text-dark);">Email (opcional):</div>
-                        <input type="email" id="mail" class="input-text" placeholder="Para enviarte los resultados">
-                        <div id="emailError" class="error-msg hidden">Por favor, usa un formato de correo válido.</div>
+                        <div class="question-text">Apreciamos tu aporte</div>
+                        <div class="subtitle">Tus respuestas nos ayudan a diseñar bienestar con precisión biotecnológica.</div>
+                        <div style="font-weight:600; margin-bottom:8px; font-size:0.9rem;">Email (opcional):</div>
+                        <input type="email" id="mail" class="input-text" placeholder="Para recibir tu perfil">
                     </div>
                     <button class="btn-primary" id="sendBtn" onclick="send()">
-                        <span id="t">Finalizar participación</span><span id="s" class="spinner hidden"></span>
+                        <span id="t">Finalizar</span><span id="s" class="spinner hidden"></span>
                     </button>
                 </div>`;
         }
 
-        function validateEmail(email) {
-            return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
-        }
-
         async function send() {
-            const emailValue = document.getElementById('mail').value.trim();
-            if (emailValue !== "" && !validateEmail(emailValue)) {
-                document.getElementById('emailError').classList.remove('hidden');
-                return;
-            }
-
             if (state.loading) return;
             state.loading = true;
             document.getElementById('t').innerText = "Procesando...";
             document.getElementById('s').classList.remove('hidden');
             
-            state.answers.Email = emailValue || 'Anónimo';
-            state.answers.Fecha = new Date().toLocaleString();
+            const emailInp = document.getElementById('mail').value.trim();
+            if(emailInp) state.answers.Email = emailInp;
+            state.answers.Fecha = new Date().toLocaleString('es-ES');
 
             try {
                 const params = new URLSearchParams(state.answers).toString();
@@ -332,8 +320,8 @@
             document.getElementById('app').innerHTML = `
                 <div class="card" style="text-align:center; justify-content:center;">
                     <div style="font-size:3rem; margin-bottom:20px;">🌿</div>
-                    <div class="question-text">Observación completada</div>
-                    <div class="subtitle">Tus datos han sido integrados con éxito. Gracias por ser parte de Essencia Vital.</div>
+                    <div class="question-text">Completado</div>
+                    <div class="subtitle">Gracias por ser parte de Essencia Vital. Tus datos han sido procesados.</div>
                 </div>`;
         }
 
