@@ -102,7 +102,6 @@
             line-height: 1.5;
         }
 
-        /* Caja de Insight Biológico dinámico */
         .insight-box {
             background: rgba(99, 102, 241, 0.1);
             border-left: 4px solid var(--primary);
@@ -158,8 +157,6 @@
             transition: transform 0.2s;
         }
 
-        .btn-primary:active { transform: scale(0.98); }
-
         .input-text {
             width: 100%;
             padding: 20px;
@@ -188,7 +185,7 @@
 
     <script>
         const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbz_Rl8NFpEZJQI4rLlR-8ndkZ90WBuNZCV2M2qzGqjuc1sUZUyx6BEM4w7CthjyD92EGA/exec";
-        const NO_APLICA = "N/A - Perfil Estándar";
+        const NO_APLICA = "No requiere análisis";
 
         const state = {
             step: 0,
@@ -226,7 +223,7 @@
                 tag: 'Configuración Base',
                 title: 'Perfil Biológico', 
                 subtitle: 'Esto nos ayuda a ajustar los rangos de optimización hormonal.',
-                options: [{l:'♀️ Femenino', v:'Femenino'}, {l:'♂️ Masculino', v:'Masculino'}, {l:'🔒 Prefiero no decir', v:'No definido'}] 
+                options: [{l:'♀️ Femenino', v:'Femenino'}, {l:'♂️ Masculino', v:'Masculino'}, {l:'🔒 No definido', v:'No definido'}] 
             },
             { 
                 id: 'Trabajo', 
@@ -281,7 +278,6 @@
             }
         ];
 
-        // Lógica de profundización (Deep Dive)
         const deepDiveQuestions = {
             estres: [
                 { id: 'Estres_Nocturno', type: 'choice', tag: 'Análisis de Estrés', title: '¿Mente rumiante?', subtitle: '¿Tus pensamientos se aceleran al apagar la luz?', insight: 'Tu sistema simpático sigue activo cuando debería estar apagado.', options: [{l:'🌙 Sí, me sucede', v:'Si'}, {l:'✅ No, duermo rápido', v:'No'}] }
@@ -297,8 +293,6 @@
         function render() {
             const container = document.getElementById('app');
             const currentQ = state.queue[state.step];
-            
-            // Actualizar progreso
             const progress = (state.step / state.queue.length) * 100;
             document.getElementById('progressBar').style.width = `${progress}%`;
 
@@ -330,21 +324,15 @@
 
         function handleChoice(id, value) {
             state.answers[id] = value;
-            
-            // Disparar lógica inteligente tras la sección de Foco
             if (id === 'Foco') {
-                if (state.answers.Estres >= 4) state.queue.push(...deepDiveQuestions.estres);
+                if (parseInt(state.answers.Estres) >= 4) state.queue.push(...deepDiveQuestions.estres);
                 if (state.answers.Foco === 'Bajo') state.queue.push(...deepDiveQuestions.cognitivo);
                 if (state.answers.Edad === '45-60' || state.answers.Edad === 'Mas 60') state.queue.push(...deepDiveQuestions.longevidad);
             }
-            
             next();
         }
 
-        function next() {
-            state.step++;
-            render();
-        }
+        function next() { state.step++; render(); }
 
         function renderFinal() {
             document.getElementById('progressBar').style.width = '100%';
@@ -352,7 +340,7 @@
                 <div class="card">
                     <div>
                         <span class="tag">Finalización</span>
-                        <div class="question-text">Análisis Finalizado</div>
+                        <div class="question-text">Mapeo Completo</div>
                         <div class="subtitle">He procesado tus vectores biológicos. Ingresa tu correo para recibir tu informe de optimización y el plan de acción:</div>
                         <input type="email" id="emailInput" class="input-text" placeholder="tu@email.com" required>
                     </div>
@@ -366,42 +354,31 @@
         async function submitData() {
             if (state.loading) return;
             const email = document.getElementById('emailInput').value;
-            if (!email || !email.includes('@')) {
-                alert("Por favor, ingresa un correo válido.");
-                return;
-            }
+            if (!email || !email.includes('@')) return;
 
             state.loading = true;
             document.getElementById('btnText').classList.add('hidden');
             document.getElementById('loader').classList.remove('hidden');
 
             state.answers.Email = email;
-            state.answers.Fecha = new Date().toLocaleString();
+            state.answers.Fecha = new Date().toLocaleString('es-ES');
 
             try {
-                // Envío de datos por método GET (ajustado para No-Cors en Google Scripts)
                 const queryParams = new URLSearchParams(state.answers).toString();
-                await fetch(`${SCRIPT_URL}?${queryParams}`, {
-                    method: 'POST',
-                    mode: 'no-cors'
-                });
-            } catch (error) {
-                console.error("Error al enviar datos:", error);
-            }
+                await fetch(`${SCRIPT_URL}?${queryParams}`, { method: 'POST', mode: 'no-cors' });
+            } catch (error) { console.error(error); }
 
-            // Pantalla de éxito
             document.getElementById('app').innerHTML = `
                 <div class="card" style="text-align: center; justify-content: center;">
                     <div style="font-size: 4rem; margin-bottom: 20px;">🧬</div>
                     <div class="question-text">Código Enviado</div>
-                    <div class="subtitle">Tu análisis está en camino. Revisa tu bandeja de entrada (y la de promociones) en unos minutos.</div>
+                    <div class="subtitle">Tus resultados están siendo procesados. Revisa tu bandeja de entrada en unos minutos.</div>
                     <div class="insight-box" style="background: rgba(45, 212, 191, 0.1); border-color: var(--accent); color: var(--accent); font-style: normal;">
                         "La transformación comienza con el conocimiento de tu propia biología."
                     </div>
                 </div>`;
         }
 
-        // Iniciar cola
         state.queue = [...coreSteps];
         render();
     </script>
