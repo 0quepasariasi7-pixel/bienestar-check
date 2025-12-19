@@ -3,18 +3,18 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Essencia Vital | Experiencia de Autodescubrimiento</title>
+    <title>Essencia Vital | Decodifica tu Biología</title>
     <style>
         :root {
             --primary: #4F46E5; 
             --primary-dark: #3730A3;
             --accent: #0D9488;  
-            --bg-gradient: linear-gradient(135deg, #F8FAFC 0%, #F1F5F9 100%);
-            --text-dark: #1E293B;
-            --text-gray: #64748B;
+            --bg-gradient: linear-gradient(135deg, #0F172A 0%, #1E293B 100%);
+            --text-light: #F8FAFC;
+            --text-gray: #94A3B8;
+            --card-bg: rgba(30, 41, 59, 0.7);
             --white: #ffffff;
-            --shadow-soft: 0 10px 30px -5px rgba(0, 0, 0, 0.04);
-            --radius: 24px;
+            --radius: 28px;
         }
 
         * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
@@ -27,21 +27,21 @@
             display: flex;
             flex-direction: column;
             overflow: hidden;
-            color: var(--text-dark);
+            color: var(--text-light);
         }
 
         .progress-container {
             position: fixed;
             top: 0;
             width: 100%;
-            height: 6px;
-            background: #E2E8F0;
+            height: 4px;
+            background: rgba(255,255,255,0.1);
             z-index: 10;
         }
 
         .progress-bar {
             height: 100%;
-            background: linear-gradient(90deg, var(--primary), var(--accent));
+            background: linear-gradient(90deg, #4F46E5, #0D9488);
             width: 0%;
             transition: width 0.6s cubic-bezier(0.4, 0, 0.2, 1);
         }
@@ -58,132 +58,114 @@
         }
 
         .card {
-            background: var(--white);
-            padding: 40px 32px;
+            background: var(--card-bg);
+            backdrop-filter: blur(20px);
+            padding: 45px 35px;
             border-radius: var(--radius);
-            box-shadow: var(--shadow-soft);
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
             width: 100%;
-            min-height: 620px;
+            min-height: 600px;
             display: flex;
             flex-direction: column;
             justify-content: space-between;
-            animation: slideUp 0.5s ease-out;
-            border: 1px solid rgba(226, 232, 240, 0.5);
+            animation: fadeIn 0.8s ease-out;
+            border: 1px solid rgba(255, 255, 255, 0.1);
         }
 
-        @keyframes slideUp {
-            from { opacity: 0; transform: translateY(20px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
+        @keyframes fadeIn { from { opacity: 0; transform: scale(0.98); } to { opacity: 1; transform: scale(1); } }
 
         .brand-header {
             display: flex;
             align-items: center;
-            gap: 10px;
-            margin-bottom: 15px;
+            gap: 12px;
+            margin-bottom: 20px;
         }
 
-        .dot { width: 10px; height: 10px; background: var(--accent); border-radius: 50%; box-shadow: 0 0 10px var(--accent); }
+        .dot { width: 12px; height: 12px; background: #0D9488; border-radius: 50%; box-shadow: 0 0 15px #0D9488; animation: pulse 2s infinite; }
+        @keyframes pulse { 0% { opacity: 1; } 50% { opacity: 0.5; } 100% { opacity: 1; } }
 
-        .brand-label {
-            font-size: 0.8rem;
-            text-transform: uppercase;
-            letter-spacing: 0.2em;
-            color: var(--primary);
-            font-weight: 800;
-        }
+        .brand-label { font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.3em; color: #818CF8; font-weight: 800; }
 
         .question-text {
-            font-size: 1.6rem;
+            font-size: 1.8rem;
             font-weight: 700;
-            color: var(--text-dark);
-            line-height: 1.2;
-            margin-bottom: 12px;
-            letter-spacing: -0.02em;
+            line-height: 1.1;
+            margin-bottom: 15px;
+            letter-spacing: -0.03em;
         }
 
-        .subtitle {
-            font-size: 0.95rem;
-            color: var(--text-gray);
-            margin-bottom: 24px;
-            line-height: 1.5;
-        }
+        .subtitle { font-size: 1.05rem; color: var(--text-gray); margin-bottom: 30px; line-height: 1.6; }
 
         .insight-box {
-            background: #EEF2FF;
-            border-left: 4px solid var(--primary);
-            padding: 16px;
-            border-radius: 0 16px 16px 0;
-            font-size: 0.88rem;
-            color: #3730A3;
-            margin-bottom: 24px;
-            display: flex;
-            gap: 10px;
-            line-height: 1.4;
-            font-style: italic;
+            background: rgba(79, 70, 229, 0.15);
+            border-left: 3px solid #818CF8;
+            padding: 20px;
+            border-radius: 4px 18px 18px 4px;
+            font-size: 0.95rem;
+            color: #C7D2FE;
+            margin-bottom: 30px;
+            line-height: 1.5;
+            animation: slideIn 0.4s ease-out;
         }
 
-        .options-grid {
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-        }
+        @keyframes slideIn { from { transform: translateX(-10px); opacity: 0; } to { transform: translateX(0); opacity: 1; } }
+
+        .options-grid { display: flex; flex-direction: column; gap: 12px; }
 
         .btn-option {
-            background: #F8FAFC;
-            border: 2px solid #F1F5F9; 
-            border-radius: 16px;
-            padding: 16px 20px;
-            font-size: 0.95rem; 
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 18px;
+            padding: 20px 24px;
+            font-size: 1rem;
             font-weight: 600;
             text-align: left;
             cursor: pointer;
-            transition: all 0.2s ease;
-            color: var(--text-dark);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            color: var(--white);
             display: flex;
             justify-content: space-between;
             align-items: center;
         }
 
         .btn-option:hover {
-            border-color: var(--primary);
-            background: #EEF2FF;
-            transform: translateX(6px);
+            background: rgba(255, 255, 255, 0.1);
+            border-color: #818CF8;
+            transform: translateY(-2px);
         }
 
         .btn-primary {
-            background: var(--primary);
+            background: linear-gradient(135deg, #4F46E5, #6366F1);
             color: white;
             border: none;
-            padding: 20px;
-            border-radius: 18px;
-            font-size: 1.1rem;
+            padding: 24px;
+            border-radius: 22px;
+            font-size: 1.2rem;
             font-weight: 700;
             width: 100%;
             cursor: pointer;
-            box-shadow: 0 10px 20px -5px rgba(79, 70, 229, 0.4);
+            transition: all 0.3s;
+            box-shadow: 0 15px 30px -10px rgba(79, 70, 229, 0.6);
         }
+
+        .btn-primary:hover { transform: translateY(-3px); box-shadow: 0 20px 40px -10px rgba(79, 70, 229, 0.8); }
 
         .input-text {
             width: 100%;
-            padding: 18px;
-            border: 2px solid #E2E8F0;
-            border-radius: 16px;
+            padding: 20px;
+            background: rgba(0,0,0,0.2);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 18px;
             font-size: 1rem;
+            color: white;
             outline: none;
-            margin-top: 10px;
+            margin-top: 15px;
         }
 
         .hidden { display: none; }
-        .spinner {
-            width: 22px; height: 22px;
-            border: 3px solid rgba(255,255,255,0.3);
-            border-top: 3px solid white;
-            border-radius: 50%;
-            animation: spin 0.8s linear infinite;
-            display: inline-block;
-        }
+        .spinner { width: 24px; height: 24px; border: 3px solid rgba(255,255,255,0.2); border-top: 3px solid white; border-radius: 50%; animation: spin 0.8s linear infinite; }
         @keyframes spin { to { transform: rotate(360deg); } }
+
     </style>
 </head>
 <body>
@@ -215,100 +197,100 @@
             { 
                 id: 'welcome', 
                 type: 'info', 
-                title: 'Tu cuerpo sabe lo que tú ignoras', 
-                subtitle: 'No somos máquinas, somos biología en constante flujo. ¿Alguna vez te has preguntado por qué te sientes como te sientes? En Essencia Vital Biotech, decodificamos tus señales para devolverte el control.',
-                btn: 'Comenzar mi decodificación' 
+                title: '¿Vives o solo funcionas?', 
+                subtitle: 'Tu cuerpo es un sistema complejo de señales que la rutina te ha enseñado a ignorar. En Essencia Vital Biotech, decodificamos tu biografía silenciosa para desbloquear tu verdadera capacidad funcional.',
+                btn: 'Decodificar mi Biología' 
             },
             { 
                 id: 'Edad', 
                 type: 'choice', 
-                title: 'Arquitectura del Tiempo', 
-                subtitle: 'Cada década reescribe tus necesidades celulares. ¿En qué etapa de tu evolución biológica te encuentras hoy?',
+                title: 'Tu Arquitectura Celular', 
+                subtitle: 'El tiempo no es lineal para tus células. ¿En qué etapa de reconstrucción te encuentras?',
                 options: [{l:'🐣 18 a 34 años', v:'18-34'}, {l:'👨‍💻 35 a 44 años', v:'35-44'}, {l:'🧘‍♂️ 45 a 60 años', v:'45-60'}, {l:'🌟 Más de 60 años', v:'Mas 60'}] 
             },
             { 
                 id: 'Sexo', 
                 type: 'choice', 
-                title: 'Perfil Genético Dominante', 
-                subtitle: 'Las rutas de absorción y los ritmos hormonales tienen lenguajes distintos. ¿Cuál es tu base?',
-                options: [{l:'♀️ Femenino', v:'Femenino'}, {l:'♂️ Masculino', v:'Masculino'}, {l:'🔒 Reservado', v:'No definido'}] 
+                title: 'Matriz Biológica', 
+                subtitle: 'Cada organismo tiene ritmos y balances de absorción distintos. ¿Cuál es tu base?',
+                options: [{l:'♀️ Perfil Femenino', v:'Femenino'}, {l:'♂️ Perfil Masculino', v:'Masculino'}, {l:'🔒 Reservado', v:'No definido'}] 
             },
             { 
                 id: 'Trabajo', 
                 type: 'choice', 
-                title: 'Dinámica de Exposición', 
-                subtitle: 'Tu postura diaria es un mensaje para tu sistema inflamatorio. ¿Cómo pasas la mayor parte de tu tiempo?',
-                options: [{l:'🪑 Foco Estático (Oficina)', v:'Sedentario'}, {l:'🏃 Flujo Mixto', v:'Mixto'}, {l:'💪 Acción de Alta Intensidad', v:'Fisico'}] 
+                title: 'Entorno de Impacto', 
+                subtitle: 'Tu actividad diaria es el mensaje más fuerte que recibe tu metabolismo. ¿Cómo te mueves?',
+                options: [{l:'🪑 Foco Sedentario', v:'Sedentario'}, {l:'🏃 Flujo Dinámico', v:'Mixto'}, {l:'💪 Alto Rendimiento Físico', v:'Fisico'}] 
             },
             { 
                 id: 'Pantalla', 
                 type: 'choice', 
-                title: 'Saturación Lumínica', 
-                subtitle: 'La luz artificial altera tu reloj interno. ¿Cuánta interferencia digital recibes al día?',
-                options: [{l:'📱 Menos de 4h', v:'Baja'}, {l:'💻 4 a 8h', v:'Media'}, {l:'📡 Más de 8h', v:'Alta'}] 
+                title: 'Interferencia Lumínica', 
+                subtitle: 'La luz artificial es un "hack" que altera tu reloj biológico. ¿Qué tan expuesto estás?',
+                options: [{l:'📱 Baja (< 4h)', v:'Baja'}, {l:'💻 Media (4-8h)', v:'Media'}, {l:'📡 Crítica (> 8h)', v:'Alta'}] 
             },
             { 
                 id: 'Energia', 
                 type: 'choice', 
-                title: 'Estado de tu Batería Vital', 
-                subtitle: '¿Sientes que tu energía fluye o que luchas contra la corriente para terminar el día?',
-                insight: 'La vitalidad es el resultado de la eficiencia de tus mitocondrias. Si la energía cae, el sistema está en deuda.',
-                options: [{l:'⚡ Flujo Total', v:5}, {l:'🔋 Sostenida', v:4}, {l:'😐 Intermitente', v:3}, {l:'🐢 En reserva', v:2}] 
+                title: 'Tu Potencial Mitocondrial', 
+                subtitle: 'La energía no es café; es eficiencia celular. ¿Cómo calificarías tu batería hoy?',
+                insight: 'Poca energía suele significar que tus mitocondrias están "estresadas" y no logran convertir nutrientes en vida.',
+                options: [{l:'⚡ Flujo Radiante', v:5}, {l:'🔋 Sostenida', v:4}, {l:'😐 Intermitente', v:3}, {l:'🐢 En reserva', v:2}] 
             },
             { 
                 id: 'Sueño', 
                 type: 'choice', 
-                title: 'El Arte de la Reparación', 
-                subtitle: 'Dormir no es pausar; es limpiar. ¿Qué tan profundo es el mantenimiento de tu sistema?',
-                insight: 'Durante el sueño profundo, tu cerebro se "lava" literalmente. Sin esto, la inflamación se queda contigo.',
-                options: [{l:'🛌 Renovación Total', v:'Excelente'}, {l:'😴 Descanso Estándar', v:'Bueno'}, {l:'🤔 Reparación Parcial', v:'Regular'}, {l:'😫 Falla de Sistema', v:'Malo'}] 
+                title: 'Fase de Restauración', 
+                subtitle: 'Al dormir, tu cerebro activa un sistema de "limpieza" profunda. ¿Qué tan efectivo es?',
+                insight: 'Sin una limpieza profunda (sistema glinfático), la inflamación acumulada durante el día se queda en tu sistema.',
+                options: [{l:'🛌 Renovación Total', v:'Excelente'}, {l:'😴 Descanso Estándar', v:'Bueno'}, {l:'🤔 Reparación Incompleta', v:'Regular'}, {l:'😫 Falla de Recuperación', v:'Malo'}] 
             },
             { 
                 id: 'Estres', 
                 type: 'choice', 
-                title: 'Nivel de Reactividad', 
-                subtitle: 'El estrés es una señal de supervivencia. ¿Qué tan alerta está tu sistema nervioso?',
-                insight: 'El cortisol elevado es como un "incendio" silencioso que agota tus defensas naturales más valiosas.',
-                options: [{l:'🧘 Centro Calmo (1-2)', v:2}, {l:'😐 Alerta Moderada (3)', v:3}, {l:'🤯 Estado Crítico (4-5)', v:5}] 
+                title: 'Carga de Adaptación', 
+                subtitle: 'El estrés es una respuesta química antigua. ¿Cuánta presión percibe tu sistema?',
+                insight: 'El cortisol elevado de forma crónica actúa como un "lanzallamas" silencioso para tus defensas.',
+                options: [{l:'🧘 Centro Calmo', v:2}, {l:'😐 Alerta Constante', v:3}, {l:'🤯 Estado de Alarma', v:5}] 
             },
             { 
                 id: 'Foco', 
                 type: 'choice', 
-                title: 'Resolución Cognitiva', 
-                subtitle: 'Tu capacidad de enfoque es el termómetro de tu salud cerebral.',
-                options: [{l:'🎯 Ultra Enfoque', v:'Alto'}, {l:'💡 Fluidez Normal', v:'Medio'}, {l:'🌫️ Niebla Mental', v:'Bajo'}] 
+                title: 'Nitidez Cognitiva', 
+                subtitle: 'Tu capacidad de atención es el reflejo directo de tu salud cerebral inflamatoria.',
+                options: [{l:'🎯 Enfoque Láser', v:'Alto'}, {l:'💡 Fluidez Normal', v:'Medio'}, {l:'🌫️ Niebla Mental', v:'Bajo'}] 
             }
         ];
 
         const deepDive = {
             estres: [
-                { id: 'Estres_Nocturno', type: 'choice', title: 'El Eco del Día', subtitle: '¿Tu mente sigue procesando datos cuando buscas el silencio?', insight: 'Esa actividad es el cortisol intentando robarle el espacio a tu melatonina nocturna.', options: [{l:'🌙 Sí, eco constante', v:'Si'}, {l:'✅ No, silencio absoluto', v:'No'}] },
-                { id: 'Cambios_Humor', type: 'choice', title: 'Oscilaciones del Yo', subtitle: '¿Experimentas mareas emocionales sin una razón lógica aparente?', options: [{l:'🎢 Sí, a veces', v:'Si'}, {l:'🧘 No, en eje', v:'No'}] }
+                { id: 'Estres_Nocturno', type: 'choice', title: 'El Ruido Nocturno', subtitle: '¿Tu mente se niega a pausar cuando buscas el silencio?', insight: 'Es tu cortisol intentando dominar la escena cuando debería estar dejando paso a la regeneración.', options: [{l:'🌙 Sí, ruido persistente', v:'Si'}, {l:'✅ No, silencio fértil', v:'No'}] },
+                { id: 'Cambios_Humor', type: 'choice', title: 'Olas Emocionales', subtitle: '¿Sientes mareas de ánimo que parecen no tener una causa externa clara?', options: [{l:'🎢 Sí, a veces', v:'Si'}, {l:'🧘 No, estabilidad', v:'No'}] }
             ],
             cognitivo: [
-                { id: 'Fatiga_Mental', type: 'choice', title: 'Resistencia al Límite', subtitle: '¿Sientes que tu capacidad de decisión se agota antes que tu cuerpo?', insight: 'Tu cerebro consume el 20% de tu oxígeno. La fatiga es un grito de auxilio por soporte celular.', options: [{l:'🧠 Sí, se agota', v:'Si'}, {l:'🛡️ No, resisto el día', v:'No'}] },
-                { id: 'Lagunas_Mentales', type: 'choice', title: 'Lapsos de Vacío', subtitle: '¿Hay momentos donde la información simplemente se desvanece?', options: [{l:'🧠 Sí, sucede', v:'Si'}, {l:'🛡️ Nunca, presente', v:'No'}] }
+                { id: 'Fatiga_Mental', type: 'choice', title: 'Resistencia al Límite', subtitle: '¿Tu cerebro se "apaga" antes de que tu cuerpo termine el día?', insight: 'El cerebro es el órgano que más consume oxígeno. La fatiga es su grito de auxilio por soporte celular.', options: [{l:'🧠 Sí, se agota pronto', v:'Si'}, {l:'🛡️ No, resisto el ritmo', v:'No'}] },
+                { id: 'Lagunas_Mentales', type: 'choice', title: 'Lapsos de Vacío', subtitle: '¿Olvidas detalles o sientes que tu presencia se fragmenta?', options: [{l:'🧠 Sucede a veces', v:'Si'}, {l:'🛡️ No, presencia plena', v:'No'}] }
             ],
             longevidad: [
-                { id: 'Recuperacion', type: 'choice', title: 'Resiliencia Funcional', subtitle: '¿Con qué velocidad regresas a tu estado base después de un impacto?', options: [{l:'🚀 Velocidad Luz', v:'Rapida'}, {l:'🐢 Inercia Lenta', v:'Lenta'}] },
-                { id: 'Molestias_Fisicas', type: 'choice', title: 'Alertas Silenciosas', subtitle: '¿Existen tensiones en tu cuerpo que se han vuelto "normales" para ti?', insight: 'El dolor crónico es una inflamación que se ha acomodado en tu estructura. No es normal, es una señal.', options: [{l:'🤕 Sí, las detecto', v:'Si'}, {l:'✨ No, fluidez total', v:'No'}] }
+                { id: 'Recuperacion', type: 'choice', title: 'Elasticidad Vital', subtitle: '¿Con qué velocidad regresas a tu estado base tras un esfuerzo?', options: [{l:'🚀 Retorno Veloz', v:'Rapida'}, {l:'🐢 Inercia Lenta', v:'Lenta'}] },
+                { id: 'Molestias_Fisicas', type: 'choice', title: 'Mensajes de Inflamación', subtitle: '¿Hay zonas de tu cuerpo que siempre están en tensión?', insight: 'El dolor sin golpe es inflamación que ha echado raíces. No es "edad", es una señal funcional.', options: [{l:'🤕 Sí, detecto alarmas', v:'Si'}, {l:'✨ No, fluidez total', v:'No'}] }
             ]
         };
 
         function render() {
             const container = document.getElementById('app');
             const q = state.queue[state.step];
-            const prog = (state.step / (state.queue.length)) * 100;
+            const prog = (state.step / state.queue.length) * 100;
             document.getElementById('progressBar').style.width = `${prog}%`;
 
             if (!q) { renderFinal(); return; }
 
             let html = `<div class="card">
                 <div>
-                    <div class="brand-header"><div class="dot"></div><span class="brand-label">Observación Funcional</span></div>
+                    <div class="brand-header"><div class="dot"></div><span class="brand-label">Capa 2: Análisis Funcional</span></div>
                     <div class="question-text">${q.title}</div>
                     <div class="subtitle">${q.subtitle || ''}</div>
-                    ${q.insight ? `<div class="insight-box"><span>✦</span><div>${q.insight}</div></div>` : ''}
+                    ${q.insight ? `<div class="insight-box">✦ ${q.insight}</div>` : ''}
                 </div>`;
             
             if (q.type === 'info') {
@@ -340,14 +322,14 @@
             document.getElementById('app').innerHTML = `
                 <div class="card">
                     <div>
-                        <div class="brand-header"><div class="dot"></div><span class="brand-label">Fase de Integración</span></div>
-                        <div class="question-text">Has completado tu mapeo</div>
-                        <div class="subtitle">Hemos detectado los vectores que están condicionando tu vitalidad actual. Para que podamos enviarte tu Reporte de Análisis Funcional y la solución personalizada, necesitamos un punto de contacto.</div>
-                        <div style="font-weight:700; margin-bottom:12px; font-size:0.9rem; color:var(--primary);">ACTIVA TU REPORTE BIOTECNOLÓGICO:</div>
-                        <input type="email" id="mail" class="input-text" placeholder="tu@email.com">
+                        <div class="brand-header"><div class="dot"></div><span class="brand-label">Integración</span></div>
+                        <div class="question-text">Tu perfil está listo</div>
+                        <div class="subtitle">Hemos detectado los vectores que están bloqueando tu potencial biológico. Ingresa tu contacto para recibir el Reporte de Análisis Funcional y la solución personalizada.</div>
+                        <div style="font-weight:700; margin-bottom:12px; font-size:0.8rem; color:#818CF8;">ACTIVAR REPORTE BIOTECNOLÓGICO:</div>
+                        <input type="email" id="mail" class="input-text" placeholder="nombre@email.com">
                     </div>
                     <button class="btn-primary" id="sendBtn" onclick="send()">
-                        <span id="t">Obtener mi Perfil Funcional</span><span id="s" class="spinner hidden"></span>
+                        <span id="t">Obtener mi Perfil Funcional</span><span id="s" class="spinner hidden" style="margin: 0 auto;"></span>
                     </button>
                 </div>`;
         }
@@ -355,7 +337,7 @@
         async function send() {
             if (state.loading) return;
             state.loading = true;
-            document.getElementById('t').innerText = "Codificando respuestas...";
+            document.getElementById('t').classList.add('hidden');
             document.getElementById('s').classList.remove('hidden');
             
             state.answers.Email = document.getElementById('mail').value || 'Anónimo';
@@ -367,11 +349,11 @@
             } catch (e) { console.error(e); }
 
             document.getElementById('app').innerHTML = `
-                <div class="card" style="text-align:center; justify-content:center; align-items:center;">
-                    <div style="font-size:4.5rem; margin-bottom:24px;">🧬</div>
+                <div class="card" style="text-align:center; justify-content:center;">
+                    <div style="font-size:5rem; margin-bottom:24px;">🧬</div>
                     <div class="question-text">Conexión Establecida</div>
-                    <div class="subtitle">Tu perfil ya está en nuestra base de análisis funcional. En breve, recibirás en tu correo los lineamientos para recuperar tu equilibrio biológico.</div>
-                    <div class="insight-box" style="background:#F0FDF4; border-color:#22C55E; color:#166534; font-style:normal; border-left:4px solid #166534;">
+                    <div class="subtitle">Tus datos biológicos ya están siendo procesados. En breve, recibirás en tu correo los lineamientos para recuperar tu equilibrio vital.</div>
+                    <div class="insight-box" style="background:rgba(13, 148, 136, 0.1); border-color:#0D9488; color:#5EEAD4; font-style:normal;">
                         La consciencia de tu biología es la llave de tu libertad. Bienvenido a Essencia Vital.
                     </div>
                 </div>`;
