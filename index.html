@@ -3,19 +3,18 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Chequeo de Bienestar Digital</title>
+    <title>Essencia Vital | Observación de Bienestar</title>
     <style>
         :root {
-            --primary: #6366F1; 
-            --primary-dark: #4338CA;
-            --accent: #06B6D4;  
-            --bg-gradient: linear-gradient(135deg, #F5F7FF 0%, #FFFFFF 100%);
-            --text-dark: #111827;
-            --text-gray: #4B5563;
+            --primary: #4F46E5; 
+            --primary-dark: #3730A3;
+            --accent: #0D9488;  
+            --bg-gradient: linear-gradient(135deg, #F8FAFC 0%, #F1F5F9 100%);
+            --text-dark: #1E293B;
+            --text-gray: #64748B;
             --white: #ffffff;
-            --shadow-soft: 0 10px 25px -5px rgba(0, 0, 0, 0.05);
-            --shadow-strong: 0 20px 25px -5px rgba(99, 102, 241, 0.2);
-            --radius: 24px;
+            --shadow-soft: 0 4px 20px -2px rgba(0, 0, 0, 0.05);
+            --radius: 20px;
         }
 
         * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
@@ -35,8 +34,8 @@
             position: fixed;
             top: 0;
             width: 100%;
-            height: 8px;
-            background: #E5E7EB;
+            height: 6px;
+            background: #E2E8F0;
             z-index: 10;
         }
 
@@ -44,7 +43,7 @@
             height: 100%;
             background: linear-gradient(90deg, var(--primary), var(--accent));
             width: 0%;
-            transition: width 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+            transition: width 0.6s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
         .app-container {
@@ -52,15 +51,15 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            padding: 16px;
-            max-width: 450px;
+            padding: 20px;
+            max-width: 480px;
             margin: 0 auto;
             width: 100%;
         }
 
         .card {
             background: var(--white);
-            padding: 36px 28px;
+            padding: 40px 32px;
             border-radius: var(--radius);
             box-shadow: var(--shadow-soft);
             width: 100%;
@@ -68,103 +67,116 @@
             display: flex;
             flex-direction: column;
             justify-content: space-between;
-            animation: slideUp 0.4s ease-out;
-            border: 1px solid rgba(255, 255, 255, 0.5);
+            animation: fadeIn 0.5s ease-out;
+            border: 1px solid rgba(226, 232, 240, 0.8);
         }
 
-        @keyframes slideUp {
-            from { opacity: 0; transform: translateY(30px); }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
             to { opacity: 1; transform: translateY(0); }
         }
 
+        .brand-label {
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.15em;
+            color: var(--primary);
+            font-weight: 700;
+            margin-bottom: 8px;
+            display: block;
+        }
+
         .question-text {
-            font-size: 1.55rem;
-            font-weight: 800;
+            font-size: 1.5rem;
+            font-weight: 700;
             color: var(--text-dark);
-            line-height: 1.25;
-            margin-bottom: 10px;
-            letter-spacing: -0.02em;
+            line-height: 1.3;
+            margin-bottom: 12px;
+            letter-spacing: -0.01em;
         }
 
         .subtitle {
-            font-size: 1.05rem;
+            font-size: 1rem;
             color: var(--text-gray);
-            margin-bottom: 28px;
-            line-height: 1.5;
-            font-style: italic;
+            margin-bottom: 30px;
+            line-height: 1.6;
         }
 
         .options-grid {
             display: flex;
             flex-direction: column;
-            gap: 16px;
+            gap: 12px;
         }
 
         .btn-option {
-            background: var(--white);
-            border: 3px solid #E5E7EB; /* Borde más grueso */
-            border-radius: 20px;
-            padding: 20px;
-            font-size: 1.15rem; /* Fuente más grande */
-            font-weight: 700;
+            background: #F8FAFC;
+            border: 2px solid #F1F5F9; 
+            border-radius: 16px;
+            padding: 18px 20px;
+            font-size: 1.05rem; 
+            font-weight: 600;
             text-align: left;
             cursor: pointer;
-            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+            transition: all 0.2s ease;
             color: var(--text-dark);
-            box-shadow: 0 2px 4px rgba(0,0,0,0.02);
+        }
+
+        .btn-option:hover {
+            border-color: var(--primary);
+            background: var(--white);
         }
 
         .btn-option:active {
-            background: var(--primary-light);
-            border-color: var(--primary);
-            transform: scale(0.96);
-            box-shadow: inset 0 2px 4px rgba(99, 102, 241, 0.1);
+            transform: scale(0.98);
+            background: #EEF2FF;
         }
 
         .btn-primary {
-            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            background: var(--primary);
             color: white;
             border: none;
-            padding: 22px;
-            border-radius: 20px;
-            font-size: 1.2rem;
-            font-weight: 700;
+            padding: 20px;
+            border-radius: 16px;
+            font-size: 1.1rem;
+            font-weight: 600;
             width: 100%;
-            box-shadow: var(--shadow-strong);
             cursor: pointer;
+            transition: background 0.3s;
         }
 
-        .btn-primary:disabled { background: #9CA3AF; cursor: not-allowed; }
+        .btn-primary:hover { background: var(--primary-dark); }
 
         .input-text {
             width: 100%;
             padding: 18px;
-            border: 2px solid #E5E7EB;
-            border-radius: 16px;
-            font-size: 1.1rem;
+            border: 2px solid #E2E8F0;
+            border-radius: 14px;
+            font-size: 1rem;
             margin-top: 10px;
             outline: none;
+            transition: border-color 0.3s;
         }
 
         .input-text:focus { border-color: var(--primary); }
 
         .error-msg {
-            color: #EF4444;
+            color: #DC2626;
             font-size: 0.85rem;
-            margin-top: 8px;
-            font-weight: 600;
+            margin-top: 10px;
+            font-weight: 500;
         }
 
         .hidden { display: none; }
         
         .spinner {
-            width: 22px; height: 22px;
-            border: 3px solid rgba(255,255,255,0.3);
-            border-top: 3px solid white;
+            width: 20px; height: 20px;
+            border: 2px solid rgba(255,255,255,0.3);
+            border-top: 2px solid white;
             border-radius: 50%;
-            animation: spin 1s linear infinite;
+            animation: spin 0.8s linear infinite;
             display: inline-block;
             margin-left: 10px;
+            vertical-align: middle;
         }
 
         @keyframes spin { to { transform: rotate(360deg); } }
@@ -180,7 +192,7 @@
 
     <script>
         const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbz_Rl8NFpEZJQI4rLlR-8ndkZ90WBuNZCV2M2qzGqjuc1sUZUyx6BEM4w7CthjyD92EGA/exec";
-        const SKIP_LABEL = "Omitido por lógica";
+        const SKIP_LABEL = "Omitido por diseño";
 
         const state = {
             step: 0,
@@ -205,27 +217,28 @@
         };
 
         const core = [
-            { id: 'welcome', type: 'info', title: 'Chequeo de Bienestar 👋', subtitle: 'Tu salud mental y física es el activo más importante. Vamos a medirla.', btn: 'Empezar ahora' },
-            { id: 'Edad', type: 'choice', title: '¿Cuál es tu rango de edad?', subtitle: 'Cada etapa de la vida tiene desafíos de salud distintos.', options: [{l:'🐣 Menos de 30', v:'Menos 30'}, {l:'👨‍💻 30 - 44 años', v:'30-44'}, {l:'🧘‍♂️ 45 - 60 años', v:'45-60'}, {l:'🌟 60 o más', v:'Mas 60'}] },
-            { id: 'Sexo', type: 'choice', title: '¿Cuál es tu sexo biológico?', subtitle: 'Esto nos permite ajustar parámetros metabólicos y hormonales.', options: [{l:'♂️ Hombre', v:'Hombre'}, {l:'♀️ Mujer', v:'Mujer'}] },
-            { id: 'Energia', type: 'choice', title: '¿Cómo está tu energía hoy?', subtitle: 'Tu energía es el motor de tu productividad y felicidad.', options: [{l:'⚡ A tope, imparable', v:5}, {l:'🔋 Bastante bien', v:4}, {l:'😐 Normal', v:3}, {l:'🐢 Un poco lento', v:2}, {l:'🪫 Agotado', v:1}] },
-            { id: 'Sueño', type: 'choice', title: '¿Qué tal dormiste anoche?', subtitle: 'Un buen descanso repara tu cerebro y tus músculos.', options: [{l:'🛌 Como un bebé', v:'Excelente'}, {l:'😴 Descansé bien', v:'Bueno'}, {l:'🤔 Regular', v:'Regular'}, {l:'😫 No descansé nada', v:'Malo'}] },
-            { id: 'Estres', type: 'choice', title: '¿Nivel de estrés actual?', subtitle: 'Identificar el estrés es el primer paso para dominarlo.', options: [{l:'🧘 Calma total (1)', v:1}, {l:'😌 Bajo control (2)', v:2}, {l:'😐 Algo tenso (3)', v:3}, {l:'😬 Estresado (4)', v:4}, {l:'🤯 Al límite (5)', v:5}] },
-            { id: 'Foco', type: 'choice', title: '¿Y tu foco mental?', subtitle: 'La atención es el superpoder del siglo XXI.', options: [{l:'🎯 Enfoque láser', v:'Alto'}, {l:'💡 Productivo', v:'Medio'}, {l:'🌫️ Neblina mental', v:'Bajo'}] }
+            { id: 'welcome', type: 'info', title: 'Bienvenido a Essencia Vital', subtitle: 'Estudiamos cómo se sienten las personas para diseñar soluciones de bienestar más precisas y humanas.', btn: 'Comenzar observación' },
+            { id: 'Edad', type: 'choice', title: '¿En qué etapa te encuentras?', subtitle: 'El paso del tiempo redefine nuestras necesidades biológicas.', options: [{l:'🐣 Menos de 30 años', v:'Menos 30'}, {l:'👨‍💻 30 a 44 años', v:'30-44'}, {l:'🧘‍♂️ 45 a 60 años', v:'45-60'}, {l:'🌟 Más de 60 años', v:'Mas 60'}] },
+            { id: 'Sexo', type: 'choice', title: 'Género', subtitle: 'Nos permite identificar patrones específicos en diferentes perfiles.', options: [{l:'Femenino', v:'Femenino'}, {l:'Masculino', v:'Masculino'}, {l:'Otro', v:'Otro'}, {l:'Prefiero no responder', v:'No_Responde'}] },
+            { id: 'Energia', type: 'choice', title: 'Tu energía diaria', subtitle: 'Observar tu vitalidad nos ayuda a comprender tu ritmo actual.', options: [{l:'⚡ Plena y constante', v:5}, {l:'🔋 Estable', v:4}, {l:'😐 Regular', v:3}, {l:'🐢 Disminuida', v:2}, {l:'🪫 Muy baja', v:1}] },
+            { id: 'Sueño', type: 'choice', title: 'Calidad del descanso', subtitle: 'El sueño es la pausa necesaria para el equilibrio funcional.', options: [{l:'🛌 Reparador', v:'Excelente'}, {l:'😴 Suficiente', v:'Bueno'}, {l:'🤔 Interrumpido', v:'Regular'}, {l:'😫 No reparador', v:'Malo'}] },
+            { id: 'Estres', type: 'choice', title: 'Presión y entorno', subtitle: 'Entender cómo procesas tu entorno es clave para el diseño consciente.', options: [{l:'🧘 Calma (1)', v:1}, {l:'😌 Controlado (2)', v:2}, {l:'😐 Presente (3)', v:3}, {l:'😬 Elevado (4)', v:4}, {l:'🤯 Al límite (5)', v:5}] },
+            { id: 'Foco', type: 'choice', title: 'Claridad mental', subtitle: 'La capacidad de enfoque determina nuestra interacción con el mundo.', options: [{l:'🎯 Enfoque nítido', v:'Alto'}, {l:'💡 Fluido', v:'Medio'}, {l:'🌫️ Disperso', v:'Bajo'}] }
         ];
 
         const mods = {
+            transicion: { id: 'trans', type: 'info', title: 'Ampliando la mirada', subtitle: 'Basado en tus respuestas, profundizaremos brevemente en algunos aspectos específicos.', btn: 'Continuar' },
             estres: [
-                { id: 'Estres_Nocturno', type: 'choice', title: '¿Te despiertas pensando en pendientes?', subtitle: 'El cerebro necesita "apagarse" para procesar información.', options: [{l:'🗓️ Sí, seguido', v:'Frecuente'}, {l:'☁️ A veces', v:'A veces'}, {l:'✅ No, duermo bien', v:'Nunca'}] },
-                { id: 'Cambios_Humor', type: 'choice', title: '¿Has tenido cambios de humor?', subtitle: 'Tu estabilidad emocional refleja tu equilibrio interno.', options: [{l:'🎢 Sí, frecuentes', v:'Si'}, {l:'🧘 No, estoy estable', v:'No'}] }
+                { id: 'Estres_Nocturno', type: 'choice', title: 'La pausa nocturna', subtitle: 'Observamos si la actividad mental persiste durante el descanso.', options: [{l:'🗓️ Frecuente', v:'Frecuente'}, {l:'☁️ Ocasional', v:'A veces'}, {l:'✅ Inexistente', v:'Nunca'}] },
+                { id: 'Cambios_Humor', type: 'choice', title: 'Estabilidad emocional', subtitle: 'La variabilidad del ánimo es un indicador de la respuesta al estrés.', options: [{l:'🎢 Variable', v:'Si'}, {l:'🧘 Estable', v:'No'}] }
             ],
             cognicion: [
-                { id: 'Fatiga_Mental', type: 'choice', title: '¿Sientes fatiga mental rápida?', subtitle: 'La resistencia cognitiva se puede entrenar y mejorar.', options: [{l:'🧠 Sí, me agoto', v:'Si'}, {l:'🛡️ No, aguanto bien', v:'No'}] },
-                { id: 'Lagunas_Mentales', type: 'choice', title: '¿Momentos de olvido?', subtitle: 'Cuidar la memoria es cuidar nuestra identidad.', options: [{l:'🧠 Sí, seguido', v:'Frecuente'}, {l:'🛡️ No', v:'No'}] }
+                { id: 'Fatiga_Mental', type: 'choice', title: 'Resistencia cognitiva', subtitle: 'Identificamos la rapidez con la que aparece el cansancio mental.', options: [{l:'🧠 Aparece pronto', v:'Si'}, {l:'🛡️ Se mantiene bien', v:'No'}] },
+                { id: 'Lagunas_Mentales', type: 'choice', title: 'Presencia y memoria', subtitle: 'Observamos pequeños lapsos de atención en la rutina diaria.', options: [{l:'🧠 Ocurren a veces', v:'Frecuente'}, {l:'🛡️ No se perciben', v:'No'}] }
             ],
             longevidad: [
-                { id: 'Recuperacion', type: 'choice', title: '¿Tiempo de recuperación?', subtitle: 'Con los años, el cuerpo necesita estrategias de reparación.', options: [{l:'🚀 Rápido', v:'Rapido'}, {l:'🐢 Lento', v:'Lento'}] },
-                { id: 'Molestias_Fisicas', type: 'choice', title: '¿Sientes molestias físicas?', subtitle: 'Escuchar el dolor evita lesiones crónicas futuras.', options: [{l:'🤕 Sí, frecuentes', v:'Si'}, {l:'✨ Rara vez', v:'No'}] }
+                { id: 'Recuperacion', type: 'choice', title: 'Ritmo de recuperación', subtitle: 'Entender cómo el cuerpo vuelve a su centro tras el esfuerzo.', options: [{l:'🚀 Dinámico', v:'Rapido'}, {l:'🐢 Pausado', v:'Lento'}] },
+                { id: 'Molestias_Fisicas', type: 'choice', title: 'Sensibilidad física', subtitle: 'El cuerpo comunica su estado a través de sensaciones sutiles.', options: [{l:'🤕 Sensaciones frecuentes', v:'Si'}, {l:'✨ Sin molestias', v:'No'}] }
             ]
         };
 
@@ -237,7 +250,12 @@
 
             if (!q) { renderFinal(); return; }
 
-            let html = `<div class="card"><div><div class="question-text">${q.title}</div>${q.subtitle ? `<div class="subtitle">${q.subtitle}</div>` : ''}</div>`;
+            let html = `<div class="card">
+                <div>
+                    <span class="brand-label">Essencia Vital</span>
+                    <div class="question-text">${q.title}</div>
+                    ${q.subtitle ? `<div class="subtitle">${q.subtitle}</div>` : ''}
+                </div>`;
             
             if (q.type === 'info') {
                 html += `<button class="btn-primary" onclick="next()">${q.btn}</button>`;
@@ -254,9 +272,15 @@
         function save(id, v) {
             state.answers[id] = v;
             if (id === 'Foco') {
-                if (state.answers.Edad === '45-60' || state.answers.Edad === 'Mas 60') state.queue.push(...mods.longevidad);
-                if (state.answers.Estres > 3) state.queue.push(...mods.estres);
-                if (state.answers.Foco !== 'Alto') state.queue.push(...mods.cognicion);
+                let extra = [];
+                if (state.answers.Edad === '45-60' || state.answers.Edad === 'Mas 60') extra.push(...mods.longevidad);
+                if (state.answers.Estres > 3) extra.push(...mods.estres);
+                if (state.answers.Foco !== 'Alto') extra.push(...mods.cognicion);
+                
+                if (extra.length > 0) {
+                    state.queue.push(mods.transicion);
+                    state.queue.push(...extra);
+                }
             }
             next();
         }
@@ -268,37 +292,33 @@
             document.getElementById('app').innerHTML = `
                 <div class="card">
                     <div>
-                        <div class="question-text">¡Todo listo! 🎉</div>
-                        <div class="subtitle">Solo falta un detalle para enviarte el análisis completo de tus resultados.</div>
-                        <div style="font-weight:700; margin-bottom:8px; font-size:1rem;">Tu Email:</div>
-                        <input type="email" id="mail" class="input-text" placeholder="ejemplo@correo.com">
-                        <div id="emailError" class="error-msg hidden">⚠️ Por favor, ingresa un correo electrónico válido.</div>
+                        <span class="brand-label">Essencia Vital</span>
+                        <div class="question-text">Gracias por tu aporte</div>
+                        <div class="subtitle">Apreciamos tu tiempo. Tus respuestas nos ayudan a diseñar un bienestar más humano y preciso.</div>
+                        <div style="font-weight:600; margin-bottom:8px; font-size:0.9rem; color:var(--text-dark);">Email (opcional):</div>
+                        <input type="email" id="mail" class="input-text" placeholder="Para enviarte los resultados">
+                        <div id="emailError" class="error-msg hidden">Por favor, usa un formato de correo válido.</div>
                     </div>
                     <button class="btn-primary" id="sendBtn" onclick="send()">
-                        <span id="t">Finalizar y Enviar</span><span id="s" class="spinner hidden"></span>
+                        <span id="t">Finalizar participación</span><span id="s" class="spinner hidden"></span>
                     </button>
                 </div>`;
         }
 
         function validateEmail(email) {
-            const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-            return re.test(String(email).toLowerCase());
+            return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
         }
 
         async function send() {
             const emailValue = document.getElementById('mail').value.trim();
-            const errorEl = document.getElementById('emailError');
-
             if (emailValue !== "" && !validateEmail(emailValue)) {
-                errorEl.classList.remove('hidden');
+                document.getElementById('emailError').classList.remove('hidden');
                 return;
-            } else {
-                errorEl.classList.add('hidden');
             }
 
             if (state.loading) return;
             state.loading = true;
-            document.getElementById('t').innerText = "Enviando...";
+            document.getElementById('t').innerText = "Procesando...";
             document.getElementById('s').classList.remove('hidden');
             
             state.answers.Email = emailValue || 'Anónimo';
@@ -311,9 +331,9 @@
 
             document.getElementById('app').innerHTML = `
                 <div class="card" style="text-align:center; justify-content:center;">
-                    <div style="font-size:4rem; margin-bottom:15px;">✨</div>
-                    <div class="question-text">¡Misión Cumplida!</div>
-                    <div class="subtitle">Tus datos han sido registrados con éxito. Gracias por cuidar tu bienestar.</div>
+                    <div style="font-size:3rem; margin-bottom:20px;">🌿</div>
+                    <div class="question-text">Observación completada</div>
+                    <div class="subtitle">Tus datos han sido integrados con éxito. Gracias por ser parte de Essencia Vital.</div>
                 </div>`;
         }
 
