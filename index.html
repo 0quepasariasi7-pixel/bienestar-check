@@ -2,365 +2,94 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Essencia Vital | Decodifica tu Biología</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Essencia Vital | El Código Origen</title>
+    <script src="https://cdn.tailwindcss.com"></script>
     <style>
-        :root {
-            --primary: #4F46E5; 
-            --primary-dark: #3730A3;
-            --accent: #0D9488;  
-            --bg-gradient: linear-gradient(135deg, #0F172A 0%, #1E293B 100%);
-            --text-light: #F8FAFC;
-            --text-gray: #94A3B8;
-            --card-bg: rgba(30, 41, 59, 0.7);
-            --white: #ffffff;
-            --radius: 28px;
-        }
-
-        * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
-
-        body {
-            font-family: -apple-system, system-ui, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-            background: var(--bg-gradient);
-            margin: 0;
-            height: 100dvh;
-            display: flex;
-            flex-direction: column;
-            overflow: hidden;
-            color: var(--text-light);
-        }
-
-        .progress-container {
-            position: fixed;
-            top: 0;
-            width: 100%;
-            height: 4px;
-            background: rgba(255,255,255,0.1);
-            z-index: 10;
-        }
-
-        .progress-bar {
-            height: 100%;
-            background: linear-gradient(90deg, #4F46E5, #0D9488);
-            width: 0%;
-            transition: width 0.6s cubic-bezier(0.4, 0, 0.2, 1);
-        }
-
-        .app-container {
-            flex: 1;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            padding: 20px;
-            max-width: 500px;
-            margin: 0 auto;
-            width: 100%;
-        }
-
-        .card {
-            background: var(--card-bg);
-            backdrop-filter: blur(20px);
-            padding: 45px 35px;
-            border-radius: var(--radius);
-            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
-            width: 100%;
-            min-height: 600px;
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
-            animation: fadeIn 0.8s ease-out;
-            border: 1px solid rgba(255, 255, 255, 0.1);
-        }
-
-        @keyframes fadeIn { from { opacity: 0; transform: scale(0.98); } to { opacity: 1; transform: scale(1); } }
-
-        .brand-header {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            margin-bottom: 20px;
-        }
-
-        .dot { width: 12px; height: 12px; background: #0D9488; border-radius: 50%; box-shadow: 0 0 15px #0D9488; animation: pulse 2s infinite; }
-        @keyframes pulse { 0% { opacity: 1; } 50% { opacity: 0.5; } 100% { opacity: 1; } }
-
-        .brand-label { font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.3em; color: #818CF8; font-weight: 800; }
-
-        .question-text {
-            font-size: 1.8rem;
-            font-weight: 700;
-            line-height: 1.1;
-            margin-bottom: 15px;
-            letter-spacing: -0.03em;
-        }
-
-        .subtitle { font-size: 1.05rem; color: var(--text-gray); margin-bottom: 30px; line-height: 1.6; }
-
-        .insight-box {
-            background: rgba(79, 70, 229, 0.15);
-            border-left: 3px solid #818CF8;
-            padding: 20px;
-            border-radius: 4px 18px 18px 4px;
-            font-size: 0.95rem;
-            color: #C7D2FE;
-            margin-bottom: 30px;
-            line-height: 1.5;
-            animation: slideIn 0.4s ease-out;
-        }
-
-        @keyframes slideIn { from { transform: translateX(-10px); opacity: 0; } to { transform: translateX(0); opacity: 1; } }
-
-        .options-grid { display: flex; flex-direction: column; gap: 12px; }
-
-        .btn-option {
-            background: rgba(255, 255, 255, 0.05);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 18px;
-            padding: 20px 24px;
-            font-size: 1rem;
-            font-weight: 600;
-            text-align: left;
-            cursor: pointer;
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            color: var(--white);
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .btn-option:hover {
-            background: rgba(255, 255, 255, 0.1);
-            border-color: #818CF8;
-            transform: translateY(-2px);
-        }
-
-        .btn-primary {
-            background: linear-gradient(135deg, #4F46E5, #6366F1);
-            color: white;
-            border: none;
-            padding: 24px;
-            border-radius: 22px;
-            font-size: 1.2rem;
-            font-weight: 700;
-            width: 100%;
-            cursor: pointer;
-            transition: all 0.3s;
-            box-shadow: 0 15px 30px -10px rgba(79, 70, 229, 0.6);
-        }
-
-        .btn-primary:hover { transform: translateY(-3px); box-shadow: 0 20px 40px -10px rgba(79, 70, 229, 0.8); }
-
-        .input-text {
-            width: 100%;
-            padding: 20px;
-            background: rgba(0,0,0,0.2);
-            border: 1px solid rgba(255,255,255,0.1);
-            border-radius: 18px;
-            font-size: 1rem;
-            color: white;
-            outline: none;
-            margin-top: 15px;
-        }
-
-        .hidden { display: none; }
-        .spinner { width: 24px; height: 24px; border: 3px solid rgba(255,255,255,0.2); border-top: 3px solid white; border-radius: 50%; animation: spin 0.8s linear infinite; }
-        @keyframes spin { to { transform: rotate(360deg); } }
-
+        @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;800&display=swap');
+        body { font-family: 'Plus Jakarta Sans', sans-serif; background-color: #0F172A; }
+        .glass { background: rgba(30, 41, 59, 0.7); backdrop-filter: blur(12px); border: 1px solid rgba(255,255,255,0.1); }
+        .text-gradient { background: linear-gradient(90deg, #818CF8, #2DD4BF); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        .glow-button { box-shadow: 0 0 20px rgba(99, 102, 241, 0.4); }
+        .animate-float { animation: float 6s ease-in-out infinite; }
+        @keyframes float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-15px); } }
     </style>
 </head>
-<body>
+<body class="text-slate-200 overflow-x-hidden">
 
-    <div class="progress-container">
-        <div class="progress-bar" id="progressBar"></div>
-    </div>
+    <!-- Navegación -->
+    <nav class="fixed top-0 w-full z-50 px-6 py-6 flex justify-between items-center backdrop-blur-sm">
+        <div class="text-xl font-extrabold tracking-tighter text-white">ESSENCIA<span class="text-indigo-400">VITAL</span></div>
+        <div class="hidden md:block text-xs tracking-[0.3em] text-slate-500 uppercase font-bold">Protocolo de Vitalidad v2.5</div>
+    </nav>
 
-    <div class="app-container" id="app"></div>
+    <!-- Hero Section -->
+    <section class="relative min-h-screen flex items-center justify-center px-6 pt-20">
+        <div class="absolute inset-0 overflow-hidden">
+            <div class="absolute -top-[10%] -left-[10%] w-[50%] h-[50%] bg-indigo-600/10 rounded-full blur-[120px]"></div>
+            <div class="absolute -bottom-[10%] -right-[10%] w-[50%] h-[50%] bg-teal-600/10 rounded-full blur-[120px]"></div>
+        </div>
 
-    <script>
-        const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbz_Rl8NFpEZJQI4rLlR-8ndkZ90WBuNZCV2M2qzGqjuc1sUZUyx6BEM4w7CthjyD92EGA/exec";
-        const NO_APLICA = "No corresponde por perfil";
-
-        const state = {
-            step: 0,
-            answers: {
-                Fecha: '', Edad: '', Sexo: '', Trabajo: '', Pantalla: '',
-                Energia: '', Sueño: '', Estres: '', Foco: '',
-                Estres_Nocturno: NO_APLICA, Cambios_Humor: NO_APLICA,
-                Fatiga_Mental: NO_APLICA, Lagunas_Mentales: NO_APLICA,
-                Recuperacion: NO_APLICA, Molestias_Fisicas: NO_APLICA, Email: ''
-            },
-            queue: [],
-            loading: false
-        };
-
-        const core = [
-            { 
-                id: 'welcome', 
-                type: 'info', 
-                title: '¿Vives o solo funcionas?', 
-                subtitle: 'Tu cuerpo es un sistema complejo de señales que la rutina te ha enseñado a ignorar. En Essencia Vital Biotech, decodificamos tu biografía silenciosa para desbloquear tu verdadera capacidad funcional.',
-                btn: 'Decodificar mi Biología' 
-            },
-            { 
-                id: 'Edad', 
-                type: 'choice', 
-                title: 'Tu Arquitectura Celular', 
-                subtitle: 'El tiempo no es lineal para tus células. ¿En qué etapa de reconstrucción te encuentras?',
-                options: [{l:'🐣 18 a 34 años', v:'18-34'}, {l:'👨‍💻 35 a 44 años', v:'35-44'}, {l:'🧘‍♂️ 45 a 60 años', v:'45-60'}, {l:'🌟 Más de 60 años', v:'Mas 60'}] 
-            },
-            { 
-                id: 'Sexo', 
-                type: 'choice', 
-                title: 'Matriz Biológica', 
-                subtitle: 'Cada organismo tiene ritmos y balances de absorción distintos. ¿Cuál es tu base?',
-                options: [{l:'♀️ Perfil Femenino', v:'Femenino'}, {l:'♂️ Perfil Masculino', v:'Masculino'}, {l:'🔒 Reservado', v:'No definido'}] 
-            },
-            { 
-                id: 'Trabajo', 
-                type: 'choice', 
-                title: 'Entorno de Impacto', 
-                subtitle: 'Tu actividad diaria es el mensaje más fuerte que recibe tu metabolismo. ¿Cómo te mueves?',
-                options: [{l:'🪑 Foco Sedentario', v:'Sedentario'}, {l:'🏃 Flujo Dinámico', v:'Mixto'}, {l:'💪 Alto Rendimiento Físico', v:'Fisico'}] 
-            },
-            { 
-                id: 'Pantalla', 
-                type: 'choice', 
-                title: 'Interferencia Lumínica', 
-                subtitle: 'La luz artificial es un "hack" que altera tu reloj biológico. ¿Qué tan expuesto estás?',
-                options: [{l:'📱 Baja (< 4h)', v:'Baja'}, {l:'💻 Media (4-8h)', v:'Media'}, {l:'📡 Crítica (> 8h)', v:'Alta'}] 
-            },
-            { 
-                id: 'Energia', 
-                type: 'choice', 
-                title: 'Tu Potencial Mitocondrial', 
-                subtitle: 'La energía no es café; es eficiencia celular. ¿Cómo calificarías tu batería hoy?',
-                insight: 'Poca energía suele significar que tus mitocondrias están "estresadas" y no logran convertir nutrientes en vida.',
-                options: [{l:'⚡ Flujo Radiante', v:5}, {l:'🔋 Sostenida', v:4}, {l:'😐 Intermitente', v:3}, {l:'🐢 En reserva', v:2}] 
-            },
-            { 
-                id: 'Sueño', 
-                type: 'choice', 
-                title: 'Fase de Restauración', 
-                subtitle: 'Al dormir, tu cerebro activa un sistema de "limpieza" profunda. ¿Qué tan efectivo es?',
-                insight: 'Sin una limpieza profunda (sistema glinfático), la inflamación acumulada durante el día se queda en tu sistema.',
-                options: [{l:'🛌 Renovación Total', v:'Excelente'}, {l:'😴 Descanso Estándar', v:'Bueno'}, {l:'🤔 Reparación Incompleta', v:'Regular'}, {l:'😫 Falla de Recuperación', v:'Malo'}] 
-            },
-            { 
-                id: 'Estres', 
-                type: 'choice', 
-                title: 'Carga de Adaptación', 
-                subtitle: 'El estrés es una respuesta química antigua. ¿Cuánta presión percibe tu sistema?',
-                insight: 'El cortisol elevado de forma crónica actúa como un "lanzallamas" silencioso para tus defensas.',
-                options: [{l:'🧘 Centro Calmo', v:2}, {l:'😐 Alerta Constante', v:3}, {l:'🤯 Estado de Alarma', v:5}] 
-            },
-            { 
-                id: 'Foco', 
-                type: 'choice', 
-                title: 'Nitidez Cognitiva', 
-                subtitle: 'Tu capacidad de atención es el reflejo directo de tu salud cerebral inflamatoria.',
-                options: [{l:'🎯 Enfoque Láser', v:'Alto'}, {l:'💡 Fluidez Normal', v:'Medio'}, {l:'🌫️ Niebla Mental', v:'Bajo'}] 
-            }
-        ];
-
-        const deepDive = {
-            estres: [
-                { id: 'Estres_Nocturno', type: 'choice', title: 'El Ruido Nocturno', subtitle: '¿Tu mente se niega a pausar cuando buscas el silencio?', insight: 'Es tu cortisol intentando dominar la escena cuando debería estar dejando paso a la regeneración.', options: [{l:'🌙 Sí, ruido persistente', v:'Si'}, {l:'✅ No, silencio fértil', v:'No'}] },
-                { id: 'Cambios_Humor', type: 'choice', title: 'Olas Emocionales', subtitle: '¿Sientes mareas de ánimo que parecen no tener una causa externa clara?', options: [{l:'🎢 Sí, a veces', v:'Si'}, {l:'🧘 No, estabilidad', v:'No'}] }
-            ],
-            cognitivo: [
-                { id: 'Fatiga_Mental', type: 'choice', title: 'Resistencia al Límite', subtitle: '¿Tu cerebro se "apaga" antes de que tu cuerpo termine el día?', insight: 'El cerebro es el órgano que más consume oxígeno. La fatiga es su grito de auxilio por soporte celular.', options: [{l:'🧠 Sí, se agota pronto', v:'Si'}, {l:'🛡️ No, resisto el ritmo', v:'No'}] },
-                { id: 'Lagunas_Mentales', type: 'choice', title: 'Lapsos de Vacío', subtitle: '¿Olvidas detalles o sientes que tu presencia se fragmenta?', options: [{l:'🧠 Sucede a veces', v:'Si'}, {l:'🛡️ No, presencia plena', v:'No'}] }
-            ],
-            longevidad: [
-                { id: 'Recuperacion', type: 'choice', title: 'Elasticidad Vital', subtitle: '¿Con qué velocidad regresas a tu estado base tras un esfuerzo?', options: [{l:'🚀 Retorno Veloz', v:'Rapida'}, {l:'🐢 Inercia Lenta', v:'Lenta'}] },
-                { id: 'Molestias_Fisicas', type: 'choice', title: 'Mensajes de Inflamación', subtitle: '¿Hay zonas de tu cuerpo que siempre están en tensión?', insight: 'El dolor sin golpe es inflamación que ha echado raíces. No es "edad", es una señal funcional.', options: [{l:'🤕 Sí, detecto alarmas', v:'Si'}, {l:'✨ No, fluidez total', v:'No'}] }
-            ]
-        };
-
-        function render() {
-            const container = document.getElementById('app');
-            const q = state.queue[state.step];
-            const prog = (state.step / state.queue.length) * 100;
-            document.getElementById('progressBar').style.width = `${prog}%`;
-
-            if (!q) { renderFinal(); return; }
-
-            let html = `<div class="card">
-                <div>
-                    <div class="brand-header"><div class="dot"></div><span class="brand-label">Capa 2: Análisis Funcional</span></div>
-                    <div class="question-text">${q.title}</div>
-                    <div class="subtitle">${q.subtitle || ''}</div>
-                    ${q.insight ? `<div class="insight-box">✦ ${q.insight}</div>` : ''}
-                </div>`;
+        <div class="relative z-10 max-w-4xl text-center">
+            <div class="inline-block px-4 py-1.5 mb-8 rounded-full glass text-[10px] md:text-xs font-bold tracking-[0.3em] text-indigo-400 uppercase border border-indigo-500/20">
+                Descubrimiento Bio-Essencial
+            </div>
+            <h1 class="text-5xl md:text-8xl font-extrabold mb-8 leading-tight tracking-tighter text-white">
+                Tu cuerpo tiene un <br/><span class="text-gradient italic">Código Origen</span>
+            </h1>
+            <p class="text-lg md:text-2xl text-slate-400 mb-12 max-w-2xl mx-auto leading-relaxed">
+                No es solo fatiga o falta de enfoque. Es tu biología intentando comunicarse. Aprende a decodificar las señales de tu sistema funcional hoy mismo.
+            </p>
             
-            if (q.type === 'info') {
-                html += `<button class="btn-primary" onclick="next()">${q.btn}</button>`;
-            } else {
-                html += `<div class="options-grid">`;
-                q.options.forEach(o => {
-                    html += `<button class="btn-option" onclick="save('${q.id}', '${o.v}')"><span>${o.l}</span><span>→</span></button>`;
-                });
-                html += `</div>`;
-            }
-            container.innerHTML = html + `</div>`;
-        }
-
-        function save(id, v) {
-            state.answers[id] = v;
-            if (id === 'Foco') {
-                if (state.answers.Estres >= 4) state.queue.push(...deepDive.estres);
-                if (state.answers.Foco === 'Bajo') state.queue.push(...deepDive.cognitivo);
-                if (state.answers.Edad === '45-60' || state.answers.Edad === 'Mas 60') state.queue.push(...deepDive.longevidad);
-            }
-            next();
-        }
-
-        function next() { state.step++; render(); }
-
-        function renderFinal() {
-            document.getElementById('progressBar').style.width = `100%`;
-            document.getElementById('app').innerHTML = `
-                <div class="card">
-                    <div>
-                        <div class="brand-header"><div class="dot"></div><span class="brand-label">Integración</span></div>
-                        <div class="question-text">Tu perfil está listo</div>
-                        <div class="subtitle">Hemos detectado los vectores que están bloqueando tu potencial biológico. Ingresa tu contacto para recibir el Reporte de Análisis Funcional y la solución personalizada.</div>
-                        <div style="font-weight:700; margin-bottom:12px; font-size:0.8rem; color:#818CF8;">ACTIVAR REPORTE BIOTECNOLÓGICO:</div>
-                        <input type="email" id="mail" class="input-text" placeholder="nombre@email.com">
-                    </div>
-                    <button class="btn-primary" id="sendBtn" onclick="send()">
-                        <span id="t">Obtener mi Perfil Funcional</span><span id="s" class="spinner hidden" style="margin: 0 auto;"></span>
-                    </button>
-                </div>`;
-        }
-
-        async function send() {
-            if (state.loading) return;
-            state.loading = true;
-            document.getElementById('t').classList.add('hidden');
-            document.getElementById('s').classList.remove('hidden');
+            <div class="flex flex-col md:flex-row gap-6 justify-center items-center">
+                <a href="https://0quepasariasi7-pixel.github.io/bienestar-check/" class="px-10 py-6 bg-indigo-600 hover:bg-indigo-500 text-white font-bold rounded-2xl transition-all transform hover:scale-105 glow-button w-full md:w-auto text-xl shadow-2xl">
+                    Iniciar Mapeo de Origen →
+                </a>
+            </div>
             
-            state.answers.Email = document.getElementById('mail').value || 'Anónimo';
-            state.answers.Fecha = new Date().toLocaleString('es-ES');
+            <div class="mt-16 flex justify-center items-center gap-8 opacity-50 grayscale">
+                <span class="text-[10px] tracking-[0.2em] uppercase font-bold">Análisis Funcional</span>
+                <span class="text-[10px] tracking-[0.2em] uppercase font-bold">Biohacking</span>
+                <span class="text-[10px] tracking-[0.2em] uppercase font-bold">Longevidad</span>
+            </div>
+        </div>
+    </section>
 
-            try {
-                const params = new URLSearchParams(state.answers).toString();
-                await fetch(`${SCRIPT_URL}?${params}`, { method: 'POST', mode: 'no-cors' });
-            } catch (e) { console.error(e); }
+    <!-- Sección de Valor -->
+    <section class="py-24 px-6 relative">
+        <div class="max-w-6xl mx-auto grid md:grid-cols-3 gap-8">
+            <div class="p-10 glass rounded-[2.5rem] border-white/5 hover:border-indigo-500/30 transition-colors">
+                <div class="w-12 h-12 bg-indigo-500/20 rounded-xl flex items-center justify-center mb-6 text-2xl">🧠</div>
+                <h3 class="text-2xl font-bold mb-4">El Velo Mental</h3>
+                <p class="text-slate-400 text-sm leading-relaxed">Descubre si tu falta de claridad es un síntoma de inflamación sistémica o un desajuste de tu ritmo circadiano.</p>
+            </div>
+            <div class="p-10 glass rounded-[2.5rem] border-white/5 hover:border-teal-500/30 transition-colors">
+                <div class="w-12 h-12 bg-teal-500/20 rounded-xl flex items-center justify-center mb-6 text-2xl">⚡</div>
+                <h3 class="text-2xl font-bold mb-4">Fugas de Energía</h3>
+                <p class="text-slate-400 text-sm leading-relaxed">Identifica en qué momento del día tu "batería biológica" tiene fugas de voltaje y cómo sellarlas desde el origen.</p>
+            </div>
+            <div class="p-10 glass rounded-[2.5rem] border-white/5 hover:border-indigo-500/30 transition-colors">
+                <div class="w-12 h-12 bg-indigo-500/20 rounded-xl flex items-center justify-center mb-6 text-2xl">🧬</div>
+                <h3 class="text-2xl font-bold mb-4">Tu Bio-Resiliencia</h3>
+                <p class="text-slate-400 text-sm leading-relaxed">Mapeamos la capacidad de tu cuerpo para volver al equilibrio absoluto después de periodos de alta demanda.</p>
+            </div>
+        </div>
+    </section>
 
-            document.getElementById('app').innerHTML = `
-                <div class="card" style="text-align:center; justify-content:center;">
-                    <div style="font-size:5rem; margin-bottom:24px;">🧬</div>
-                    <div class="question-text">Conexión Establecida</div>
-                    <div class="subtitle">Tus datos biológicos ya están siendo procesados. En breve, recibirás en tu correo los lineamientos para recuperar tu equilibrio vital.</div>
-                    <div class="insight-box" style="background:rgba(13, 148, 136, 0.1); border-color:#0D9488; color:#5EEAD4; font-style:normal;">
-                        La consciencia de tu biología es la llave de tu libertad. Bienvenido a Essencia Vital.
-                    </div>
-                </div>`;
-        }
+    <!-- Cierre -->
+    <section class="py-32 px-6 text-center">
+        <div class="max-w-3xl mx-auto glass p-16 rounded-[3rem] border-indigo-500/20">
+            <h2 class="text-4xl font-bold mb-6 text-white">¿Estás listo para la revelación?</h2>
+            <p class="text-slate-400 mb-10">Inicia el protocolo de descubrimiento y obtén tu perfil funcional completo.</p>
+            <a href="https://0quepasariasi7-pixel.github.io/bienestar-check/" class="inline-block px-8 py-4 border-2 border-indigo-500 text-indigo-400 hover:bg-indigo-500 hover:text-white font-bold rounded-xl transition-all">
+                Acceder al Cuestionario de Origen
+            </a>
+        </div>
+    </section>
 
-        state.queue = [...core];
-        render();
-    </script>
+    <footer class="py-12 text-center text-slate-600 text-[10px] tracking-[0.5em] uppercase">
+        © 2024 Essencia Vital Biotech | Consciencia de Origen
+    </footer>
+
 </body>
 </html>
