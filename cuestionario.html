@@ -2,464 +2,148 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Essencia Vital | Código Origen</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Essencia Vital | Cuestionario de Origen</title>
+    <script src="https://cdn.tailwindcss.com"></script>
     <style>
-        :root {
-            --primary: #6366F1; 
-            --accent: #2DD4BF;  
-            --bg: #0F172A;
-            --card-bg: rgba(30, 41, 59, 0.7);
-            --text-light: #F8FAFC;
-            --text-dim: #94A3B8;
-            --radius: 32px;
-        }
-
-        * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
-
-        body {
-            font-family: -apple-system, system-ui, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-            background: var(--bg);
-            margin: 0;
-            min-height: 100vh;
-            display: flex;
-            flex-direction: column;
-            color: var(--text-light);
-            overflow-x: hidden;
-        }
-
-        /* Barra de progreso superior */
-        .progress-container {
-            position: fixed;
-            top: 0;
-            width: 100%;
-            height: 6px;
-            background: rgba(255,255,255,0.05);
-            z-index: 100;
-        }
-
-        .progress-bar {
-            height: 100%;
-            background: linear-gradient(90deg, var(--primary), var(--accent));
-            width: 0%;
-            transition: width 0.8s cubic-bezier(0.16, 1, 0.3, 1);
-        }
-
-        .app-container {
-            flex: 1;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            padding: 40px 24px;
-            max-width: 650px;
-            margin: 0 auto;
-            width: 100%;
-        }
-
-        .card {
-            background: var(--card-bg);
-            backdrop-filter: blur(24px);
-            padding: 40px 32px;
-            border-radius: var(--radius);
-            box-shadow: 0 40px 100px -20px rgba(0,0,0,0.7);
-            width: 100%;
-            min-height: 580px;
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
-            border: 1px solid rgba(255,255,255,0.08);
-            animation: emerge 0.8s cubic-bezier(0.16, 1, 0.3, 1);
-        }
-
-        @keyframes emerge {
-            from { opacity: 0; transform: translateY(20px) scale(0.98); }
-            to { opacity: 1; transform: translateY(0) scale(1); }
-        }
-
-        .tag {
-            font-size: 0.7rem;
-            text-transform: uppercase;
-            letter-spacing: 0.3em;
-            color: var(--accent);
-            font-weight: 800;
-            margin-bottom: 12px;
-            display: block;
-        }
-
-        .question-text {
-            font-size: 1.85rem;
-            font-weight: 800;
-            line-height: 1.1;
-            margin-bottom: 16px;
-            letter-spacing: -0.03em;
-            color: white;
-        }
-
-        .subtitle {
-            font-size: 1rem;
-            color: var(--text-dim);
-            margin-bottom: 24px;
-            line-height: 1.5;
-        }
-
-        .insight-box {
-            background: rgba(99, 102, 241, 0.1);
-            border-left: 4px solid var(--primary);
-            padding: 16px 20px;
-            border-radius: 4px 20px 20px 4px;
-            font-size: 0.9rem;
-            color: #C7D2FE;
-            margin-bottom: 24px;
-            line-height: 1.5;
-        }
-
-        .options-grid { display: flex; flex-direction: column; gap: 10px; }
-
-        .btn-option {
-            background: rgba(255, 255, 255, 0.03);
-            border: 1px solid rgba(255, 255, 255, 0.08);
-            border-radius: 18px;
-            padding: 18px 24px;
-            font-size: 1rem;
-            font-weight: 600;
-            text-align: left;
-            cursor: pointer;
-            transition: all 0.25s;
-            color: var(--text-light);
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .btn-option:hover {
-            background: rgba(99, 102, 241, 0.15);
-            border-color: var(--primary);
-            transform: translateX(6px);
-        }
-
-        .btn-primary {
-            background: linear-gradient(135deg, var(--primary), #4F46E5);
-            color: white;
-            border: none;
-            padding: 22px;
-            border-radius: 20px;
-            font-size: 1.1rem;
-            font-weight: 700;
-            width: 100%;
-            cursor: pointer;
-            box-shadow: 0 15px 30px -10px rgba(99, 102, 241, 0.4);
-            transition: transform 0.2s;
-        }
-
-        .input-text {
-            width: 100%;
-            padding: 20px;
-            background: rgba(0,0,0,0.3);
-            border: 1px solid rgba(255,255,255,0.1);
-            border-radius: 18px;
-            font-size: 1.1rem;
-            color: white;
-            outline: none;
-            margin-bottom: 20px;
-        }
-
-        /* Estilos del Portal de Resultados Educativos */
-        .portal-content {
-            text-align: left;
-            animation: fadeIn 1s ease-in;
-        }
-
-        .result-section {
-            background: rgba(255,255,255,0.03);
-            border-radius: 20px;
-            padding: 24px;
-            margin-bottom: 20px;
-            border: 1px solid rgba(255,255,255,0.05);
-        }
-
-        .result-section h3 {
-            color: var(--accent);
-            font-size: 1.2rem;
-            margin-top: 0;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        .action-item {
-            background: rgba(45, 212, 191, 0.1);
-            color: var(--accent);
-            padding: 12px 16px;
-            border-radius: 12px;
-            font-size: 0.9rem;
-            margin-top: 12px;
-            font-weight: 600;
-        }
-
-        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
-        .spinner { width: 24px; height: 24px; border: 3px solid rgba(255,255,255,0.2); border-top: 3px solid white; border-radius: 50%; animation: spin 0.8s linear infinite; margin: 0 auto; }
-        @keyframes spin { to { transform: rotate(360deg); } }
-        .hidden { display: none; }
-
+        @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;800&display=swap');
+        :root { --primary: #6366F1; --accent: #2DD4BF; --bg: #0F172A; }
+        body { background: var(--bg); font-family: 'Plus Jakarta Sans', sans-serif; color: white; overflow-x: hidden; }
+        .card { background: rgba(30, 41, 59, 0.7); backdrop-filter: blur(20px); border: 1px solid rgba(255,255,255,0.1); }
+        .btn-option { background: rgba(255,255,255,0.05); transition: all 0.3s; border: 1px solid rgba(255,255,255,0.1); }
+        .btn-option:hover { background: rgba(99, 102, 241, 0.2); border-color: var(--primary); transform: translateX(5px); }
+        .progress-bar { transition: width 0.5s ease-in-out; }
     </style>
 </head>
-<body>
+<body class="min-h-screen flex flex-col items-center justify-center p-6">
 
-    <div class="progress-container">
-        <div class="progress-bar" id="progressBar"></div>
+    <!-- Barra de Progreso Superior -->
+    <div class="fixed top-0 left-0 w-full h-1 bg-slate-800">
+        <div id="progress" class="h-full bg-indigo-500 progress-bar" style="width: 0%"></div>
     </div>
 
-    <div class="app-container" id="app"></div>
+    <div id="quiz-container" class="w-full max-w-xl">
+        <!-- Contenido dinámico -->
+    </div>
 
     <script>
-        const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbz_Rl8NFpEZJQI4rLlR-8ndkZ90WBuNZCV2M2qzGqjuc1sUZUyx6BEM4w7CthjyD92EGA/exec";
-        const NO_APLICA = "No requiere análisis";
+        // NUEVA URL DE IMPLEMENTACIÓN PROPORCIONADA (Versión 3 - 19 dic 2025)
+        const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbw5LotdMBfPkpfTMTtvy_n3wXUHE7TJZKc9Zhwum7-8_ClMwpGbOD2iRQGTalNcaWZrDg/exec";
+        const NO_DATA = "No aplica";
 
         const state = {
             step: 0,
             answers: {
-                Fecha: '', Edad: '', Sexo: '', Trabajo: '', Pantalla: '',
-                Energia: '', Sueño: '', Estres: '', Foco: '',
-                Estres_Nocturno: NO_APLICA, Cambios_Humor: NO_APLICA,
-                Fatiga_Mental: NO_APLICA, Lagunas_Mentales: NO_APLICA,
-                Recuperacion: NO_APLICA, Molestias_Fisicas: NO_APLICA, Email: ''
-            },
-            queue: [],
-            loading: false
+                Fecha: '', Edad: '', Sexo: '', Trabajo: '', Pantalla: '', 
+                Energia: '', Sueño: '', Estres: '', Foco: '', 
+                Estres_Nocturno: NO_DATA, Cambios_Humor: NO_DATA, 
+                Fatiga_Mental: NO_DATA, Lagunas_Mentales: NO_DATA, 
+                Recuperacion: NO_DATA, Molestias_Fisicas: NO_DATA, Email: ''
+            }
         };
 
-        const coreSteps = [
-            { 
-                id: 'welcome', 
-                type: 'info', 
-                tag: 'Protocolo de Inicio',
-                title: 'Bienvenido al Mapeo de Origen', 
-                subtitle: 'Vamos a analizar las señales que tu cuerpo emite para identificar áreas de mejora funcional.',
-                btn: 'Comenzar Mapeo' 
-            },
-            { 
-                id: 'Edad', 
-                type: 'choice', 
-                tag: 'Biología Cronológica',
-                title: '¿Cuál es tu fase actual?', 
-                subtitle: 'La edad define la prioridad de reparación de tus células.',
-                options: [{l:'🐣 18 a 34 años', v:'18-34'}, {l:'👨‍💻 35 a 44 años', v:'35-44'}, {l:'🧘‍♂️ 45 a 60 años', v:'45-60'}, {l:'🌟 Más de 60 años', v:'Mas 60'}] 
-            },
-            { 
-                id: 'Sexo', 
-                type: 'choice', 
-                tag: 'Configuración Base',
-                title: 'Perfil Biológico', 
-                subtitle: 'Esto nos ayuda a ajustar los rangos de optimización hormonal.',
-                options: [{l:'♀️ Femenino', v:'Femenino'}, {l:'♂️ Masculino', v:'Masculino'}, {l:'🔒 No definido', v:'No definido'}] 
-            },
-            { 
-                id: 'Trabajo', 
-                type: 'choice', 
-                tag: 'Entorno de Operación',
-                title: '¿Cómo es tu día laboral?', 
-                subtitle: 'Tu postura impacta en tu sistema linfático y circulatorio.',
-                options: [{l:'🪑 Mayormente sentado', v:'Sedentario'}, {l:'🏃 En constante movimiento', v:'Mixto'}, {l:'💪 Exigencia física alta', v:'Fisico'}] 
-            },
-            { 
-                id: 'Pantalla', 
-                type: 'choice', 
-                tag: 'Carga Lumínica',
-                title: 'Exposición a pantallas', 
-                subtitle: 'La luz azul artificial altera tus ciclos de regeneración.',
-                options: [{l:'📱 Baja (< 4h)', v:'Baja'}, {l:'💻 Media (4-8h)', v:'Media'}, {l:'📡 Alta (> 8h)', v:'Alta'}] 
-            },
-            { 
-                id: 'Energia', 
-                type: 'choice', 
-                tag: 'Estado de Batería',
-                title: 'Nivel de Vitalidad', 
-                subtitle: '¿Cómo calificarías tu energía al despertar y durante el día?',
-                insight: 'La energía no se tiene, se genera en las mitocondrias de tus células.',
-                options: [{l:'⚡ Máximo Potencial', v:5}, {l:'🔋 Sostenida', v:4}, {l:'😐 Intermitente', v:3}, {l:'🐢 Agotamiento precoz', v:2}] 
-            },
-            { 
-                id: 'Sueño', 
-                type: 'choice', 
-                tag: 'Fase de Reparación',
-                title: 'Calidad de tu Sueño', 
-                subtitle: '¿Sientes que tu cuerpo se "repara" durante la noche?',
-                insight: 'Un sueño de mala calidad impide que el cerebro elimine desechos metabólicos.',
-                options: [{l:'🛌 Renovación Total', v:'Excelente'}, {l:'😴 Descanso Bueno', v:'Bueno'}, {l:'🤔 Reparación Incompleta', v:'Regular'}, {l:'😫 Falla Sistémica', v:'Malo'}] 
-            },
-            { 
-                id: 'Estres', 
-                type: 'choice', 
-                tag: 'Sistema Nervioso',
-                title: 'Nivel de Alerta/Estrés', 
-                subtitle: '¿Qué tan "encendido" está tu sistema de alarma hoy?',
-                insight: 'El cortisol elevado crónicamente apaga tu sistema inmune y digestivo.',
-                options: [{l:'🧘 Calma Profunda', v:2}, {l:'😐 Alerta Gestionada', v:3}, {l:'🤯 Alarma Constante', v:5}] 
-            },
-            { 
-                id: 'Foco', 
-                type: 'choice', 
-                tag: 'Capacidad Cognitiva',
-                title: 'Nitidez Mental', 
-                subtitle: '¿Qué tan fácil te resulta concentrarte en una sola tarea?',
-                options: [{l:'🎯 Ultra Foco', v:'Alto'}, {l:'💡 Fluidez Estándar', v:'Medio'}, {l:'🌫️ Niebla Mental', v:'Bajo'}] 
-            }
+        const questions = [
+            { id: 'Edad', title: '¿Cuál es tu rango de edad?', options: ['18-34', '35-44', '45-60', 'Mas 60'] },
+            { id: 'Sexo', title: 'Perfil Biológico', options: ['Femenino', 'Masculino', 'No definido'] },
+            { id: 'Trabajo', title: 'Nivel de actividad laboral', options: ['Sedentario', 'Mixto', 'Fisico'] },
+            { id: 'Pantalla', title: 'Exposición diaria a pantallas', options: ['Baja', 'Media', 'Alta'] },
+            { id: 'Energia', title: 'Nivel de energía actual (1-5)', options: ['1', '2', '3', '4', '5'] },
+            { id: 'Sueño', title: 'Calidad de tu descanso', options: ['Excelente', 'Bueno', 'Regular', 'Malo'] },
+            { id: 'Estres', title: 'Nivel de estrés percibido (1-5)', options: ['1', '2', '3', '4', '5'] },
+            { id: 'Foco', title: 'Claridad y enfoque mental', options: ['Alto', 'Medio', 'Bajo'] },
+            { id: 'Estres_Nocturno', title: '¿Sufres de mente rumiante por la noche?', options: ['Si', 'No'] },
+            { id: 'Cambios_Humor', title: '¿Experimentas cambios de humor repentinos?', options: ['Si', 'No'] },
+            { id: 'Fatiga_Mental', title: '¿Sientes fatiga mental constante?', options: ['Si', 'No'] },
+            { id: 'Lagunas_Mentales', title: '¿Tienes "lagunas" o falta de memoria reciente?', options: ['Si', 'No'] },
+            { id: 'Recuperacion', title: 'Capacidad de recuperación tras esfuerzo', options: ['Rapida', 'Normal', 'Lenta'] },
+            { id: 'Molestias_Fisicas', title: '¿Presentas molestias físicas o rigidez?', options: ['Si', 'No'] }
         ];
 
-        const deepDiveQuestions = {
-            estres: [
-                { id: 'Estres_Nocturno', type: 'choice', tag: 'Análisis de Estrés', title: '¿Mente rumiante?', subtitle: '¿Tus pensamientos se aceleran al apagar la luz?', insight: 'Tu sistema simpático sigue activo cuando debería estar apagado.', options: [{l:'🌙 Sí, me sucede', v:'Si'}, {l:'✅ No, duermo rápido', v:'No'}] }
-            ],
-            cognitivo: [
-                { id: 'Fatiga_Mental', type: 'choice', tag: 'Análisis Cognitivo', title: 'Agotamiento Mental', subtitle: '¿Sientes que tu "procesador" se calienta o se vuelve lento?', options: [{l:'🧠 Sí, fatiga real', v:'Si'}, {l:'🛡️ No, aguanto bien', v:'No'}] }
-            ],
-            longevidad: [
-                { id: 'Molestias_Fisicas', type: 'choice', tag: 'Análisis Estructural', title: 'Molestias Crónicas', subtitle: '¿Sientes rigidez en articulaciones o espalda al despertar?', options: [{l:'🤕 Sí, detecto rigidez', v:'Si'}, {l:'✨ No, me muevo fluido', v:'No'}] }
-            ]
-        };
-
         function render() {
-            const container = document.getElementById('app');
-            const currentQ = state.queue[state.step];
-            const progress = (state.step / state.queue.length) * 100;
-            document.getElementById('progressBar').style.width = `${progress}%`;
-
-            if (!currentQ) { renderFinal(); return; }
-
-            let html = `<div class="card">
-                <div>
-                    <span class="tag">${currentQ.tag || 'Mapeo'}</span>
-                    <div class="question-text">${currentQ.title}</div>
-                    <div class="subtitle">${currentQ.subtitle || ''}</div>
-                    ${currentQ.insight ? `<div class="insight-box">✦ ${currentQ.insight}</div>` : ''}
-                </div>`;
+            const container = document.getElementById('quiz-container');
+            const progress = document.getElementById('progress');
             
-            if (currentQ.type === 'info') {
-                html += `<button class="btn-primary" onclick="next()"> ${currentQ.btn} </button>`;
-            } else {
-                html += `<div class="options-grid">`;
-                currentQ.options.forEach(opt => {
-                    html += `
-                        <button class="btn-option" onclick="handleChoice('${currentQ.id}', '${opt.v}')">
-                            <span>${opt.l}</span>
-                            <span>→</span>
-                        </button>`;
-                });
-                html += `</div>`;
+            if (state.step >= questions.length) {
+                renderEmailCapture();
+                progress.style.width = "100%";
+                return;
             }
-            container.innerHTML = html + `</div>`;
-        }
 
-        function handleChoice(id, value) {
-            state.answers[id] = value;
-            if (id === 'Foco') {
-                if (parseInt(state.answers.Estres) >= 4) state.queue.push(...deepDiveQuestions.estres);
-                if (state.answers.Foco === 'Bajo') state.queue.push(...deepDiveQuestions.cognitivo);
-                if (state.answers.Edad === '45-60' || state.answers.Edad === 'Mas 60') state.queue.push(...deepDiveQuestions.longevidad);
-            }
-            next();
-        }
+            const q = questions[state.step];
+            progress.style.width = `${(state.step / questions.length) * 100}%`;
 
-        function next() { state.step++; render(); }
-
-        function renderFinal() {
-            document.getElementById('progressBar').style.width = '100%';
-            document.getElementById('app').innerHTML = `
-                <div class="card">
-                    <div>
-                        <span class="tag">Integración Biológica</span>
-                        <div class="question-text">Mapeo Completo</div>
-                        <div class="subtitle">He procesado tus vectores biológicos. Ingresa tu correo para recibir tu informe de optimización y acceder a tu portal educativo inmediato:</div>
-                        <input type="email" id="emailInput" class="input-text" placeholder="tu@email.com" required>
+            container.innerHTML = `
+                <div class="card p-8 rounded-3xl shadow-2xl animate-in fade-in slide-in-from-bottom-4 duration-500">
+                    <span class="text-xs font-bold text-indigo-400 uppercase tracking-widest mb-2 block">Protocolo Origen · Paso ${state.step + 1}</span>
+                    <h2 class="text-3xl font-extrabold mb-6 leading-tight">${q.title}</h2>
+                    <div class="flex flex-col gap-3">
+                        ${q.options.map(opt => `
+                            <button onclick="save('${q.id}', '${opt}')" class="btn-option p-5 rounded-2xl text-left font-semibold flex justify-between items-center group">
+                                <span>${opt}</span>
+                                <span class="opacity-0 group-hover:opacity-100 transition-opacity">→</span>
+                            </button>
+                        `).join('')}
                     </div>
-                    <button class="btn-primary" id="submitBtn" onclick="submitData()">
-                        <span id="btnText">Recibir Mi Código Origen</span>
-                        <div id="loader" class="spinner hidden"></div>
-                    </button>
-                </div>`;
+                </div>
+            `;
         }
 
-        async function submitData() {
-            if (state.loading) return;
-            const email = document.getElementById('emailInput').value;
-            if (!email || !email.includes('@')) return;
+        function save(id, value) {
+            state.answers[id] = value;
+            state.step++;
+            render();
+        }
 
-            state.loading = true;
-            document.getElementById('btnText').classList.add('hidden');
-            document.getElementById('loader').classList.remove('hidden');
+        function renderEmailCapture() {
+            const container = document.getElementById('quiz-container');
+            container.innerHTML = `
+                <div class="card p-8 rounded-3xl shadow-2xl text-center">
+                    <div class="w-20 h-20 bg-indigo-500/20 rounded-full flex items-center justify-center mx-auto mb-6">
+                        <span class="text-3xl">🧬</span>
+                    </div>
+                    <h2 class="text-3xl font-extrabold mb-4">Mapeo Finalizado</h2>
+                    <p class="text-slate-400 mb-6 leading-relaxed">Ingresa tu email para recibir el reporte personalizado de tu Código Origen.</p>
+                    <input type="email" id="email" placeholder="tu@email.com" class="w-full p-4 bg-black/30 border border-white/10 rounded-xl mb-4 text-white outline-none focus:border-indigo-500 transition-colors">
+                    <button onclick="finish()" id="submit-btn" class="w-full p-4 bg-indigo-600 hover:bg-indigo-500 rounded-xl font-bold transition-all shadow-lg shadow-indigo-500/20">
+                        Obtener Mi Análisis →
+                    </button>
+                </div>
+            `;
+        }
 
+        async function finish() {
+            const email = document.getElementById('email').value;
+            const btn = document.getElementById('submit-btn');
+            if (!email.includes('@')) return;
+            
+            btn.disabled = true;
+            btn.innerHTML = "Sincronizando vectors...";
+            
             state.answers.Email = email;
             state.answers.Fecha = new Date().toLocaleString('es-ES');
 
             try {
-                const queryParams = new URLSearchParams(state.answers).toString();
-                await fetch(`${SCRIPT_URL}?${queryParams}`, { method: 'POST', mode: 'no-cors' });
-            } catch (error) { console.error(error); }
-
-            showEducationPortal();
-        }
-
-        function showEducationPortal() {
-            const container = document.getElementById('app');
-            const answers = state.answers;
-            
-            let pilarHtml = '';
-
-            // Lógica para mostrar contenido educativo basado en las respuestas
-            if (answers.Foco === 'Bajo' || answers.Fatiga_Mental === 'Si') {
-                pilarHtml += `
-                <div class="result-section">
-                    <h3>🧠 Pilar del Enfoque: Neuro-Inflamación</h3>
-                    <p class="subtitle">Tu niebla mental es un síntoma de alerta. Tus células gliales están en modo protección, ralentizando tu comunicación neuronal.</p>
-                    <div class="action-item">Protocolo: Bloque de Enfoque de 90 min sin pantallas.</div>
-                </div>`;
-            }
-
-            if (parseInt(answers.Energia) <= 3 || answers.Sueño === 'Malo') {
-                pilarHtml += `
-                <div class="result-section">
-                    <h3>⚡ Pilar de Energía: Modo Supervivencia</h3>
-                    <p class="subtitle">Tus mitocondrias han dejado de producir energía para enfocarse en la defensa celular. Esto causa tus "crashes" de tarde.</p>
-                    <div class="action-item">Acción: Luz solar directa en los primeros 20 min al despertar.</div>
-                </div>`;
-            }
-
-            if (parseInt(answers.Estres) >= 4 || answers.Estres_Nocturno === 'Si') {
-                pilarHtml += `
-                <div class="result-section">
-                    <h3>🧬 Pilar de Resiliencia: Tono Vagal Bajo</h3>
-                    <p class="subtitle">Tu sistema nervioso está atrapado en modo simpático (alarma). Necesitas recalibrar tu nervio vago para recuperar la calma.</p>
-                    <div class="action-item">Práctica: Respiración coherente (5s inhalar / 5s exhalar).</div>
-                </div>`;
-            }
-
-            // Fallback si todo sale bien
-            if (pilarHtml === '') {
-                pilarHtml = `
-                <div class="result-section">
-                    <h3>✨ Optimización de Mantenimiento</h3>
-                    <p class="subtitle">Tu sistema muestra una base sólida. Es el momento perfecto para pasar de la salud estándar al alto rendimiento biológico.</p>
-                    <div class="action-item">Acción: Optimiza tu suplementación de Magnesio y Glicina.</div>
-                </div>`;
-            }
-
-            container.innerHTML = `
-                <div class="card" style="justify-content: flex-start; overflow-y: auto;">
-                    <div class="portal-content">
-                        <span class="tag">Portal de Resultados Inmediatos</span>
-                        <div class="question-text">Tu Código de Origen</div>
-                        <div class="insight-box">He analizado tus datos. Mientras tu reporte completo llega al correo, aquí tienes tus revelaciones críticas:</div>
-                        
-                        ${pilarHtml}
-
-                        <p style="text-align:center; font-size:0.8rem; color:var(--text-dim); margin-top:20px;">
-                            Un análisis detallado ha sido enviado a <strong>${answers.Email}</strong>. Revisa tu bandeja de entrada.
-                        </p>
+                const params = new URLSearchParams(state.answers).toString();
+                // Envío mediante POST no-cors para evitar bloqueos del navegador
+                await fetch(`${SCRIPT_URL}?${params}`, { method: 'POST', mode: 'no-cors' });
+                
+                document.getElementById('quiz-container').innerHTML = `
+                    <div class="card p-12 rounded-3xl text-center">
+                        <div class="text-5xl mb-6">✨</div>
+                        <h2 class="text-3xl font-extrabold text-white mb-4">Sincronización Exitosa</h2>
+                        <p class="text-slate-400">Tus datos han sido procesados. El informe llegará a <b>${email}</b> en breve.</p>
+                        <button onclick="window.location.href='index.html'" class="mt-8 px-6 py-2 bg-slate-800 rounded-lg text-sm font-bold hover:bg-slate-700 transition-colors">
+                            Volver al Panel
+                        </button>
                     </div>
-                </div>`;
+                `;
+            } catch (e) {
+                console.error(e);
+                btn.disabled = false;
+                btn.innerHTML = "Error de conexión. Reintentar.";
+            }
         }
 
-        state.queue = [...coreSteps];
         render();
     </script>
 </body>
